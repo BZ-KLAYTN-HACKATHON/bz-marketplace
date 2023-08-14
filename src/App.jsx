@@ -39,6 +39,7 @@ function App() {
 					<div className=''>Hi</div>
 					<MyComponent />
 					<ConnectKitButton />
+					{/* <TaskPage /> */}
 				</ConnectKitProvider>
 			</WagmiConfig>
 		</div>
