@@ -1,0 +1,122 @@
+// ID
+const ID_SERVICE_ENDPOINT = process.env.REACT_APP_ID_SERVICE_ENDPOINT
+export const ROFI_ACCOUNT = {
+  AUTH_WALLET: ID_SERVICE_ENDPOINT + '/users/auth/wallet',
+  INFO: ID_SERVICE_ENDPOINT + '/users/info',
+  REMOVE: ID_SERVICE_ENDPOINT + '/users',
+  OTP: ID_SERVICE_ENDPOINT + '/users/update-email/otp',
+  VERIFY: ID_SERVICE_ENDPOINT + '/users/update-email/verify',
+  AUTH: ID_SERVICE_ENDPOINT + '/users/auth',
+  REFRESH_TOKEN: ID_SERVICE_ENDPOINT + '/users/token',
+  SIGNIN_EMAIL_OTP: ID_SERVICE_ENDPOINT + '/users/auth-email/request-otp',
+  SIGNIN_EMAIL_VERIFY: ID_SERVICE_ENDPOINT + '/users/auth-email/validate-otp',
+  SIGNUP_EMAIL_OTP: ID_SERVICE_ENDPOINT + '/users/signup-email/request-otp',
+  SIGNUP_EMAIL_VERIFY: ID_SERVICE_ENDPOINT + '/users/signup-email/validate-otp',
+  SETUP_ACCOUNT: ID_SERVICE_ENDPOINT + '/users/setup-account',
+  RECOVERY_PASSWORD_EMAIL_OTP:
+    ID_SERVICE_ENDPOINT + '/users/recovery-password/request-otp',
+  VERYFY_RECOVERY_PASSWORD_EMAIL_OTP:
+    ID_SERVICE_ENDPOINT + '/users/recovery-password/verify-otp',
+  RECOVERY_PASSWORD_VALIDATE_OTP:
+    ID_SERVICE_ENDPOINT + '/users/recovery-password/update',
+  SETUP_EMAIL_OTP: ID_SERVICE_ENDPOINT + '/users/setup-email/request-otp',
+  SETUP_EMAIL_VERIFY: ID_SERVICE_ENDPOINT + '/users/setup-email/validate-otp',
+  SETUP_WALLET: ID_SERVICE_ENDPOINT + '/users/setup-wallet',
+  GET_APPLE_TOKEN: ID_SERVICE_ENDPOINT + '/users/apple/token',
+  AUTH_APPLE: ID_SERVICE_ENDPOINT + '/users/auth/apple-web',
+  REVOKE_APPLE: ID_SERVICE_ENDPOINT + '/users/apple/revoke',
+  AUTH_FACEBOOK: ID_SERVICE_ENDPOINT + '/users/auth/facebook',
+  AUTH_GOOGLE: ID_SERVICE_ENDPOINT + '/users/auth/google-dapp',
+  PROFILE: ID_SERVICE_ENDPOINT + '/userprofiles'
+}
+
+// Payment
+const PAYMENT_SERVICE_ENDPOINT = process.env.REACT_APP_PAYMENT_SERVICE_ENDPOINT
+const MARKETPLACE_SERVICE_ENDPOINT =
+  process.env.REACT_APP_MARKETPLACE_SERVICE_ENDPOINT
+export const ROFI_PAYMENT = {
+  CREATE_STORE_ORDER: MARKETPLACE_SERVICE_ENDPOINT + '/store/orders',
+  H2P_DEPOSIT_SUBMISSION:
+    PAYMENT_SERVICE_ENDPOINT + '/help2pay/deposit-submission',
+  H2P_BANKCODE: process.env.REACT_APP_BANKLIST_URL || '',
+  PROCESSING_STORE_ORDER: (id) =>
+    MARKETPLACE_SERVICE_ENDPOINT + `/store/orders/${id}/process`,
+  GET_EXCHANGERATE: PAYMENT_SERVICE_ENDPOINT + '/common/exchange-rate',
+  CANCEL_STORE_ORDER: (id) =>
+    MARKETPLACE_SERVICE_ENDPOINT + `/store/orders/${id}/cancel`,
+  XSOLLA: {
+    GET_TOKEN: PAYMENT_SERVICE_ENDPOINT + '/xsolla/authentication-token',
+    CREATE_ORDER: 'https://store.xsolla.com/api/v2/project'
+  },
+  GET_PAYMENT_METHOD: PAYMENT_SERVICE_ENDPOINT + '/common/payment-methods'
+}
+// STORE
+const STORE_BLOCKCHAIN_SERVICE_ENDPOINT =
+  process.env.REACT_APP_STORE_BLOCKCHAIN_SERVICE_ENDPOINT
+export const ROFI_STORE = {
+  GET_ITEMS: MARKETPLACE_SERVICE_ENDPOINT + '/packs',
+  GET_ITEM_BY_PACKID: (id) => MARKETPLACE_SERVICE_ENDPOINT + '/packs/' + id,
+  GET_SIGNATURE: STORE_BLOCKCHAIN_SERVICE_ENDPOINT + '/check_order',
+  STATISTICS: MARKETPLACE_SERVICE_ENDPOINT + '/statistics/store'
+}
+// MARKETPLACE PAGE
+export const ROFI_MARKETPLACE_ORDERS = {
+  LIST: MARKETPLACE_SERVICE_ENDPOINT + '/orders',
+  DETAIL: (id) => MARKETPLACE_SERVICE_ENDPOINT + '/orders/' + id,
+  STATISTICS: MARKETPLACE_SERVICE_ENDPOINT + '/statistics/market'
+}
+
+// Token
+const TOKEN_SERVICE_ENDPOINT = process.env.REACT_APP_TOKEN_SERVICE_ENDPOINT
+const TOKEN_BLOCKCHAIN_SERVICE_ENDPOINT =
+  process.env.REACT_APP_TOKEN_BLOCKCHAIN_SERVICE_ENDPOINT
+export const ROFI_TOKEN = {
+  BALANCE_ALL: TOKEN_SERVICE_ENDPOINT + '/tokens/balance/all',
+  TRANSACTIONS: TOKEN_SERVICE_ENDPOINT + '/transactions',
+  GETBALANCEBYSYMBOL: (token) =>
+    TOKEN_BLOCKCHAIN_SERVICE_ENDPOINT + `/${token}/balance`,
+  WITHDRAW_TOKEN: (token) =>
+    TOKEN_BLOCKCHAIN_SERVICE_ENDPOINT + `/${token}/withdraw`
+}
+
+// NFT
+const NFT_SERVICE_ENDPOINT = process.env.REACT_APP_NFT_SERVICE_ENDPOINT
+const NFT_BLOCKCHAIN_SERVICE_ENDPOINT =
+  process.env.REACT_APP_NFT_BLOCKCHAIN_SERVICE_ENDPOINT
+export const ROFI_NFT = {
+  INVENTORY: NFT_SERVICE_ENDPOINT + '/collections/RG-02/items', // ?accountId=${account_id}${account ? `&wallet=${account}
+  ITEM: NFT_SERVICE_ENDPOINT + '/items', // /id
+  MINT: NFT_BLOCKCHAIN_SERVICE_ENDPOINT + '/mint'
+}
+
+// AIRDROP EVENT
+const AIRDROP_BLOCKCHAIN_SERVICE_ENDPOINT =
+  process.env.REACT_APP_AIRDROP_BLOCKCHAIN_SERVICE_ENDPOINT
+export const ROFI_EVENT = {
+  CONFIG: MARKETPLACE_SERVICE_ENDPOINT + '/event-config',
+  AIRDROP: AIRDROP_BLOCKCHAIN_SERVICE_ENDPOINT + '/check_wallet',
+  SPIN: MARKETPLACE_SERVICE_ENDPOINT + '/airdrop/RG-02',
+  AIRDROP_ITEM: MARKETPLACE_SERVICE_ENDPOINT + '/airdrop-event/RG-02',
+  USER_INGAME: ID_SERVICE_ENDPOINT + '/users/games/RG-02/user-in-game',
+  POOL_LEADERBOARD: MARKETPLACE_SERVICE_ENDPOINT + '/leaderboard/pool',
+  TOP_RANK_LEADERBOARD: MARKETPLACE_SERVICE_ENDPOINT + '/leaderboard/top-rank',
+  GET_RANK_LEADERBOARD: MARKETPLACE_SERVICE_ENDPOINT + '/leaderboard/rank',
+  GET_FREE_NFTS: MARKETPLACE_SERVICE_ENDPOINT + '/airdrop-event/RG-02'
+}
+
+// CONFIGURATION
+const SYSTEM_CONFIG_SERVICE_ENDPOINT =
+  process.env.REACT_APP_SYSTEM_CONFIG_SERVICE_ENDPOINT
+const SYSTEM_CONFIG_APP_ENDPOINT =
+  process.env.REACT_APP_SYSTEM_CONFIG_APP_ENDPOINT
+export const SYSTEM_CONFIG = {
+  WEB_CONFIG: SYSTEM_CONFIG_APP_ENDPOINT + '/public/web-config',
+  BLOCKCHAIN_SERVICES: SYSTEM_CONFIG_SERVICE_ENDPOINT + '/all_service_status' // ALL_STATUS
+}
+
+// POOL
+const POOL_SERVICE_ENDPOINT = process.env.REACT_APP_POOL_SERVICE_ENDPOINT
+export const POOL_SERVICE = {
+  STAKE_HISTORY: POOL_SERVICE_ENDPOINT + '/stake_history',
+  POOL_REWARD: POOL_SERVICE_ENDPOINT + '/pool_reward'
+}

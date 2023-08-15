@@ -2,6 +2,6 @@
 	"compilerOptions": {
 		"baseUrl": "src"
 	},
-	"include": ["src", "prettier.config.js"],
+	"include": ["src", "prettier.config.cjs"],
 	"exclude": ["node_modules", "build", "coverage", "dist", "lib"]
 }
