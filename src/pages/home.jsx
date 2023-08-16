@@ -115,7 +115,7 @@ const Home = () => {
       } finally {
         setTimeout(() => {
           setLoading(false)
-        }, 700)
+        }, 2000)
       }
     }
   }, [pagination.hasNextPage, pagination.next, searchParamValues, toast])
