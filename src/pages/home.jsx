@@ -130,12 +130,12 @@ const Home = () => {
     <div className='ignore-nav'>
       <Banner img={BannerImage} title={'Store'} />
       <motion.section
-        className='ctn px-2.5 py-8'
+        className='ctn px-2.5 pb-8 pt-4'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <div className='mb-[23px] border-2 border-border-foreground'>
+        <div className='mb-2.5 border-2 border-border-foreground md:mb-[23px]'>
           <Statistic
             day={{
               one: {
@@ -156,7 +156,7 @@ const Home = () => {
             }}
           />
         </div>
-        <div className='mb-[29px] flex w-full flex-col items-center justify-between gap-2.5 md:flex-row'>
+        <div className='mb-2.5 flex w-full flex-col items-center justify-between gap-2.5 md:mb-[29px] md:flex-row'>
           <Input
             parentClass='w-full max-w-[690px]'
             type='text'

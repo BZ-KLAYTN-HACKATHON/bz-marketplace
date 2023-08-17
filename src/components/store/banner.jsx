@@ -1,7 +1,7 @@
 export const Banner = ({ img, title }) => {
   return (
     <section className='banner relative'>
-      <div className='relative z-[1] h-[420px]'>
+      <div className='relative z-[1] h-[290px] md:h-[420px]'>
         <picture className='h-full w-full'>
           <source srcSet={img} media='(min-width: 992px)' />
           <source srcSet={img} media='(min-width: 768px)' />
