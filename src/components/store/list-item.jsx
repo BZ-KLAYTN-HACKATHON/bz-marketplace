@@ -38,7 +38,7 @@ export const ListItemInStore = ({ data, loading, getItems }) => {
   return (
     <div className=''>
       <ul
-        className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5'
+        className='grid grid-cols-2 gap-x-[5px] gap-y-2.5 sm:grid-cols-2 md:grid-cols-4 md:gap-x-6 md:gap-y-6 xl:grid-cols-5'
         ref={animationParent}
       >
         {data.map((item, idx) => (

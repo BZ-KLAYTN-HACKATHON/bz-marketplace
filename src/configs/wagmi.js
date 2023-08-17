@@ -8,7 +8,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { klaytnChain, klaytnTestnetChain } from './customChains'
 
 const { publicClient, chains } = configureChains(
-  [klaytnChain, klaytnTestnetChain, mainnet],
+  [mainnet, klaytnChain, klaytnTestnetChain],
   [
     infuraProvider({ apiKey: process.env.REACT_APP_INFURA_ID }),
     jsonRpcProvider({
@@ -28,7 +28,7 @@ const initWagmiConfig = getDefaultConfig({
   infuraId: process.env.REACT_APP_INFURA_ID,
   walletConnectProjectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
   // Required
-  appName: 'Klaytn',
+  appName: 'Klaytn Web3 Base',
   // Optional
   appDescription: 'Your App Description',
   appUrl: 'https://games.eraprotocol.io/', // your app's url

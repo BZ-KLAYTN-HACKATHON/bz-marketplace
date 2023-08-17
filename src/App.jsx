@@ -1,18 +1,26 @@
 import 'assets/css/App.css'
 import { DefaultLayout } from 'components/layouts'
+import { AnimatePresence } from 'framer-motion'
 import Home from 'pages/home'
 import StoreItemPage from 'pages/store-item'
-import { Route, Routes } from 'react-router-dom'
+import { cloneElement } from 'react'
+import { useLocation, useRoutes } from 'react-router-dom'
 
 function App() {
+  const element = useRoutes([
+    { path: '/store/item/:packId', element: <StoreItemPage /> },
+    { path: '/', element: <Home /> },
+    { path: '*', element: <Home /> }
+  ])
+
+  const location = useLocation()
+
   return (
     <div className=''>
       <DefaultLayout>
-        <Routes>
-          <Route path='/store/item/:packId' element={<StoreItemPage />} />
-          <Route path='/' element={<Home />} />
-          <Route path='*' element={<Home />} />
-        </Routes>
+        <AnimatePresence mode='wait'>
+          {cloneElement(element, { key: location.pathname })}
+        </AnimatePresence>
       </DefaultLayout>
     </div>
   )

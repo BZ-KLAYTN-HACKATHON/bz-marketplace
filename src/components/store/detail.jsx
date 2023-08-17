@@ -26,21 +26,20 @@ export const DetailPreview = ({ imageUrl, videoUrl }) => {
   return (
     <div className='w-full md:max-w-[388px]'>
       {/* Preview */}
-      <div
-        className='aspect-[16/17] w-full overflow-hidden
-        rounded-[5px] lg:mb-[30px]'
-      >
-        <video
-          className='h-full w-full object-cover'
-          poster={imageUrl}
-          muted={true}
-          playsInline={true}
-          autoPlay={true}
-          loop
-          src={videoUrl}
-        >
-          Your browser does not support the video tag.+
-        </video>
+      <div className='overflow-hidden rounded-[5px] border-2 border-primary lg:mb-[30px]'>
+        <div className='aspect-[16/17] w-full rounded-[5px]'>
+          <video
+            className='h-full w-full object-cover'
+            poster={imageUrl}
+            muted={true}
+            playsInline={true}
+            autoPlay={true}
+            loop
+            src={videoUrl}
+          >
+            Your browser does not support the video tag.+
+          </video>
+        </div>
       </div>
 
       {/* <div
@@ -167,7 +166,7 @@ export const DetailBaseStats = ({ rarity, mdp, dp, earnPoint }) => {
           <div className='col-span-1 text-xs'>
             <div
               className='border-tw-500 bg-tw-600 truncate border 
-              border-b-[0.5px] px-[20px] py-[10px] text-center text-[#b3b3b3]'
+              border-b-[0.5px] px-[20px] py-[10px] text-center text-violet-100'
               title='Max DP'
             >
               Max DP
@@ -182,14 +181,14 @@ export const DetailBaseStats = ({ rarity, mdp, dp, earnPoint }) => {
           <div className='col-span-1 text-xs'>
             <div
               className='border-tw-500 bg-tw-600 truncate border 
-        border-b-[0.5px] px-[20px] py-[10px] text-center text-[#b3b3b3]'
+              border-b-[0.5px] px-[20px] py-[10px] text-center text-violet-100'
               title='Durability Point'
             >
               Durability Point
             </div>
             <div
               className='border-tw-500 border border-t-[0.5px] px-[20px] py-[10px] 
-        text-center font-bold'
+              text-center font-bold'
             >
               {dp}
             </div>
@@ -197,14 +196,14 @@ export const DetailBaseStats = ({ rarity, mdp, dp, earnPoint }) => {
           <div className='col-span-1 text-xs'>
             <div
               className='border-tw-500 bg-tw-600 truncate border 
-        border-b-[0.5px] px-[20px] py-[10px] text-center text-[#b3b3b3]'
+              border-b-[0.5px] px-[20px] py-[10px] text-center text-violet-100'
               title='Earn Point'
             >
               Earn Point
             </div>
             <div
               className='border-tw-500 border border-t-[0.5px] px-[20px] py-[10px] 
-        text-center font-bold'
+              text-center font-bold'
             >
               {earnPoint}
             </div>

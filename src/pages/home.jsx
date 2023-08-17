@@ -1,6 +1,8 @@
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
+import { motion } from 'framer-motion'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useWindowSize } from 'react-recipes'
 import { useSearchParams } from 'react-router-dom'
 
 import storeApi from 'apis/store-api'
@@ -126,8 +128,13 @@ const Home = () => {
 
   return (
     <div className='ignore-nav'>
-      <Banner img={BannerImage} title={'Marketplace'} />
-      <section className='ctn py-8'>
+      <Banner img={BannerImage} title={'Store'} />
+      <motion.section
+        className='ctn px-2.5 py-8'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <div className='mb-[23px] border-2 border-border-foreground'>
           <Statistic
             day={{
@@ -149,7 +156,7 @@ const Home = () => {
             }}
           />
         </div>
-        <div className='mb-[29px] flex w-full items-center justify-between'>
+        <div className='mb-[29px] flex w-full flex-col items-center justify-between gap-2.5 md:flex-row'>
           <Input
             parentClass='w-full max-w-[690px]'
             type='text'
@@ -171,7 +178,7 @@ const Home = () => {
               }
             }}
           />
-          <div className='flex items-center gap-[18px]'>
+          <div className='flex w-full items-center gap-2.5 md:w-max md:gap-[18px]'>
             <Select
               onValueChange={(value) => {
                 setSortValue(value)
@@ -239,14 +246,14 @@ const Home = () => {
             />
           </div>
         </div>
-        <div className=''>
+        <motion.div className=''>
           <ListItemInStore
             data={data}
             loading={loading}
             getItems={getDataWhenScrollDown}
           />
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
     </div>
   )
 }
@@ -254,16 +261,22 @@ const Home = () => {
 export default Home
 
 const MultipleSelect = ({ list, value, setValue, name = 'item', onChange }) => {
+  const { width } = useWindowSize()
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant='outline'
           role='combobox'
-          className='w-max min-w-[120px] justify-between'
+          className='w-max min-w-[90px] justify-between md:min-w-[120px]'
         >
           {value?.length ? (
-            `${value?.length} ${name} selected`
+            width < 640 ? (
+              <p className='first-letter:uppercase'>{name}</p>
+            ) : (
+              `${value?.length} ${name} selected`
+            )
           ) : (
             <p className='first-letter:uppercase'>{name}</p>
           )}
