@@ -125,13 +125,16 @@ const StoreItemPage = () => {
                   <div>
                     {!address ? (
                       <ConnectKitButton.Custom>
-                        {({ show }) => (
+                        {({ show, isConnecting }) => (
                           <Button
                             className='w-full text-white'
                             size='lg'
+                            disable={isConnecting}
                             onClick={show}
                           >
-                            Connect wallet to order
+                            {isConnecting
+                              ? 'Submit on wallet'
+                              : 'Connect wallet to order'}
                           </Button>
                         )}
                       </ConnectKitButton.Custom>

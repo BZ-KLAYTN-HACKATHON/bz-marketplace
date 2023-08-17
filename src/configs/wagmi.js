@@ -8,11 +8,13 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { klaytnChain, klaytnTestnetChain } from './customChains'
 
 const { publicClient, chains } = configureChains(
+  // [mainnet, klaytnChain, klaytnTestnetChain],
   [mainnet, klaytnChain, klaytnTestnetChain],
   [
     infuraProvider({ apiKey: process.env.REACT_APP_INFURA_ID }),
     jsonRpcProvider({
       rpc: (chain) => {
+        console.log(129812, chain)
         if (![klaytnChain.id, klaytnTestnetChain.id].includes(chain.id))
           return null
         return { http: chain.rpcUrls.default.http }

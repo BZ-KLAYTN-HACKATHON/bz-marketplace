@@ -6,7 +6,7 @@ import { useWindowSize } from 'react-recipes'
 import { useSearchParams } from 'react-router-dom'
 
 import storeApi from 'apis/store-api'
-import BannerImage from 'assets/img/marketplace-banner.jpg'
+import BannerImage from 'assets/img/marketplace-banner.webp'
 import { Banner, ListItemInStore, Statistic } from 'components/store'
 import { Button } from 'components/ui/button'
 import {

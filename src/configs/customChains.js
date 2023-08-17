@@ -1,6 +1,6 @@
 export const klaytnChain = {
   id: 8217,
-  name: 'Klaytn',
+  name: 'Klaytn Mainnet',
   network: 'klaytn',
   nativeCurrency: {
     decimals: 18,
@@ -9,16 +9,10 @@ export const klaytnChain = {
   },
   rpcUrls: {
     default: {
-      http: [
-        'https://public-node-api.klaytnapi.com/v1/cypress',
-        'https://klaytn.blockpi.network/v1/rpc/public	'
-      ]
+      http: ['https://klaytn.blockpi.network/v1/rpc/public']
     },
     public: {
-      http: [
-        'https://public-node-api.klaytnapi.com/v1/cypress',
-        'https://klaytn.blockpi.network/v1/rpc/public	'
-      ]
+      http: ['https://klaytn.blockpi.network/v1/rpc/public']
     }
   },
   blockExplorers: {
@@ -45,7 +39,26 @@ export const klaytnTestnetChain = {
     }
   },
   blockExplorers: {
-    default: { name: 'KlaytnScope', url: 'https://scope.klaytn.com' },
-    etherscan: { name: 'KlaytnScope', url: 'https://scope.klaytn.com' }
-  }
+    default: { name: 'KlaytnScope', url: 'https://baobab.klaytnscope.com' },
+    etherscan: { name: 'KlaytnScope', url: 'https://baobab.klaytn.com' }
+  },
+  testnet: true
+}
+
+export const avalancheChain = {
+  id: 43_114,
+  name: 'Avalanche',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Avalanche',
+    symbol: 'AVAX'
+  },
+  rpcUrls: {
+    default: 'https://api.avax.network/ext/bc/C/rpc'
+  },
+  blockExplorers: {
+    default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
+    snowtrace: { name: 'SnowTrace', url: 'https://snowtrace.io' }
+  },
+  testnet: false
 }
