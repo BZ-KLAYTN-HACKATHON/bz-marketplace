@@ -4,22 +4,21 @@ import { mainnet } from 'wagmi/chains'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { publicProvider } from 'wagmi/providers/public'
 
-import { klaytnChain, klaytnTestnetChain } from './customChains'
+import { bnbChain, klaytnChain, klaytnTestnetChain } from './customChains'
 
 const { publicClient, chains } = configureChains(
-  // [mainnet, klaytnChain, klaytnTestnetChain],
-  [mainnet, klaytnChain, klaytnTestnetChain],
+  [bnbChain, mainnet, klaytnChain, klaytnTestnetChain],
   [
     infuraProvider({ apiKey: process.env.REACT_APP_INFURA_ID }),
     jsonRpcProvider({
       rpc: (chain) => {
-        console.log(129812, chain)
-        if (![klaytnChain.id, klaytnTestnetChain.id].includes(chain.id))
-          return null
+        if (![].includes(chain.id)) return null
         return { http: chain.rpcUrls.default.http }
       }
-    })
+    }),
+    publicProvider({ weight: 2 })
   ]
 )
 

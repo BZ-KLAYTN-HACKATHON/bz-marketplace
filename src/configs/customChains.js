@@ -45,20 +45,32 @@ export const klaytnTestnetChain = {
   testnet: true
 }
 
-export const avalancheChain = {
-  id: 43_114,
-  name: 'Avalanche',
+export const bnbChain = {
+  id: 56,
+  name: 'BNB Smart Chain',
   nativeCurrency: {
     decimals: 18,
-    name: 'Avalanche',
-    symbol: 'AVAX'
+    name: 'BNB',
+    symbol: 'BNB'
   },
+  network: 'bsc',
   rpcUrls: {
-    default: 'https://api.avax.network/ext/bc/C/rpc'
+    default: {
+      http: ['https://bsc-rpc.gateway.pokt.network']
+    },
+    public: {
+      http: ['https://bsc-rpc.gateway.pokt.network']
+    }
   },
   blockExplorers: {
-    default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
-    snowtrace: { name: 'SnowTrace', url: 'https://snowtrace.io' }
+    default: { name: 'BscScan', url: 'https://bscscan.com' },
+    etherscan: { name: 'BscScan', url: 'https://bscscan.com' }
+  },
+  contracts: {
+    multicall3: {
+      address: '0xca11bde05977b3631167028862be2a173976ca11',
+      blockCreated: 15921452
+    }
   },
   testnet: false
 }
