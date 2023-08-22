@@ -31,10 +31,11 @@ export const Nav = () => {
             <NavItem
               key={idx}
               path={item.path}
-              isCurrent={matchPath(
-                `${item.path}${item.path === '/' ? '' : '/*'}`,
-                pathname
-              )}
+              isCurrent={
+                item.path === '/'
+                  ? matchPath(`/`, pathname) || matchPath(`/store/*`, pathname)
+                  : matchPath(`${item.path}/*`, pathname)
+              }
             >
               {item.title}
             </NavItem>

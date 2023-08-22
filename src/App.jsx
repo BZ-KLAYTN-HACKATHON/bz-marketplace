@@ -1,12 +1,13 @@
+import { AnimatePresence } from 'framer-motion'
+import { cloneElement } from 'react'
+import { useLocation, useRoutes } from 'react-router-dom'
+
 import 'assets/css/App.css'
 import { DefaultLayout } from 'components/layouts'
-import { AnimatePresence } from 'framer-motion'
 import Home from 'pages/home'
 import Marketplace from 'pages/marketplace'
 import MarketplaceItemPage from 'pages/marketplace-item'
 import StoreItemPage from 'pages/store-item'
-import { cloneElement } from 'react'
-import { useLocation, useRoutes } from 'react-router-dom'
 
 function App() {
   const element = useRoutes([
@@ -14,9 +15,9 @@ function App() {
       path: '/marketplace/:collectionId/:orderId',
       element: <MarketplaceItemPage />
     },
-    { path: '/marketplace', element: <Marketplace />, exact: true },
+    { path: '/marketplace', element: <Marketplace /> },
     { path: '/store/item/:packId', element: <StoreItemPage /> },
-    { path: '/', element: <Home />, exact: true },
+    { path: '/', element: <Home /> },
     { path: '*', element: <Home /> }
   ])
 
