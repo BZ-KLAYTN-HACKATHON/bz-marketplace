@@ -4,6 +4,7 @@ import normal from 'assets/img/store/rarity/common.png'
 import legendary from 'assets/img/store/rarity/legendary.png'
 import epic from 'assets/img/store/rarity/mythical.png'
 import rare from 'assets/img/store/rarity/uncommon.png'
+import formatNumber from 'utils/formatNumber'
 
 export const DetailIdentify = ({ name, id }) => {
   return (
@@ -71,7 +72,11 @@ export const DetailPriceAndStock = ({
     <p className={`flex items-center space-x-[10px] ${className}`}>
       <span className='text-xl font-bold uppercase text-[#F9CC29]'>{`${price} ${unit}`}</span>
       <span className='text-sm text-white/[46%]'>
-        {stock ? (stock > 0 ? `${stock} in stock` : 'Out of stock') : ''}
+        {stock
+          ? stock > 0
+            ? `${formatNumber.formatNumberFollowThousand(stock)} in stock`
+            : 'Out of stock'
+          : ''}
       </span>
     </p>
   )
