@@ -14,9 +14,9 @@ function App() {
       path: '/marketplace/:collectionId/:orderId',
       element: <MarketplaceItemPage />
     },
-    { path: '/marketplace', element: <Marketplace /> },
+    { path: '/marketplace', element: <Marketplace />, exact: true },
     { path: '/store/item/:packId', element: <StoreItemPage /> },
-    { path: '/', element: <Home /> },
+    { path: '/', element: <Home />, exact: true },
     { path: '*', element: <Home /> }
   ])
 
@@ -25,7 +25,7 @@ function App() {
   return (
     <div className=''>
       <DefaultLayout>
-        <AnimatePresence mode='wait'>
+        <AnimatePresence mode='wait' initial={false}>
           {cloneElement(element, { key: location.pathname })}
         </AnimatePresence>
       </DefaultLayout>

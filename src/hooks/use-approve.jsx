@@ -26,15 +26,14 @@ export const useApprove = ({
     isLoading: isCheckingWallet,
     isError
   } = useContractWrite({
-    ...config,
-    onSuccess
+    ...config
   })
 
   const {
     data: receipt,
     isLoading,
     isSuccess
-  } = useWaitForTransaction({ hash: data?.hash })
+  } = useWaitForTransaction({ hash: data?.hash, onSuccess })
 
   return {
     isLoading,

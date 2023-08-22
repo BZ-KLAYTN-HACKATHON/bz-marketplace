@@ -1,3 +1,4 @@
+import { bnbChain } from 'configs/customChains'
 import formatBalance from 'utils/formatBalance'
 import { useAccount, useContractRead } from 'wagmi'
 
@@ -14,14 +15,15 @@ export const useAllowance = ({
     args: [...args],
     address: contractAddress,
     enabled: Boolean(contractAddress) && Boolean(address),
-    functionName: 'allowance'
+    functionName: 'allowance',
+    chainId: bnbChain.id
   })
 
   return {
     data,
     error,
     isLoading,
-    isSuccess,
+    isSuccess: isSuccess,
     isApproved: isLoading
       ? false
       : formatBalance.formatFixedNumber(data || -1) >= price,

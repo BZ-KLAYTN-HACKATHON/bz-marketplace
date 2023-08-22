@@ -86,8 +86,6 @@ const Home = () => {
     setLoading(true)
     try {
       const result = await storeApi.getItems(searchParamValues)
-
-      console.log(result.data)
       setData(result.data.data)
       setPagination(result.data.paginator)
     } catch (error) {
@@ -173,11 +171,11 @@ const Home = () => {
                 searchInput
                   ? setSearchParams({
                       ...searchParamValues,
-                      search: searchInput
+                      name: searchInput
                     })
                   : setSearchParams(() => {
                       const searchParamValuesClone = { ...searchParamValues }
-                      delete searchParamValuesClone.search
+                      delete searchParamValuesClone.name
                       return searchParamValuesClone
                     })
               }

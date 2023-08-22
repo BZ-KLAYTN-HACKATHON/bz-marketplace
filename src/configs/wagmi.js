@@ -18,7 +18,7 @@ const { publicClient, chains } = configureChains(
         return { http: chain.rpcUrls.default.http }
       }
     }),
-    publicProvider({ weight: 2 })
+    publicProvider({ weight: 1 })
   ]
 )
 

@@ -19,6 +19,7 @@ import { bnbChain } from 'configs/customChains'
 import { DanceTokenABI } from 'contract/abis'
 import { RG02_NFT_SHOP_ADDRESS, RG02_TOKEN_ADDRESS } from 'contract/addresses'
 import { useAllowance, useApprove } from 'hooks'
+import { usePurchaseStore } from 'hooks/store'
 import formatBalance from 'utils/formatBalance'
 
 const StoreItemPage = () => {
@@ -30,11 +31,11 @@ const StoreItemPage = () => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
   const [notfound, setNotfound] = useState(false)
-  const [purchasing, setPurchasing] = useState(false)
 
   const { address } = useAccount()
   const { toast } = useToast()
 
+  // Check and process APPROVE item then return current data/status
   const {
     isLoading: isCheckingAllowance,
     isApproved,
@@ -59,14 +60,18 @@ const StoreItemPage = () => {
         : 0n
     ],
     contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
-    onSuccess: () => {
-      const sti = setInterval(() => {
-        if (isApproved) clearInterval(sti)
-        refetchAllowance()
-      }, 5000)
-    }
+    onSuccess: () => refetchAllowance()
   })
 
+  // Purchase hook
+  const { purchase, purchasing } = usePurchaseStore({
+    allow: isApproveSuccess || isApproved,
+    contractAddress: RG02_NFT_SHOP_ADDRESS[bnbChain.id],
+    packId: 1,
+    onSuccess: () => refetchAllowance()
+  })
+
+  // Function to get item data by packId
   const getData = useCallback(async () => {
     try {
       const result = await storeApi.getItemByPackId(packId)
@@ -78,7 +83,11 @@ const StoreItemPage = () => {
       ])
     } catch (error) {
       console.error(error)
-      toast({ title: 'Error', description: "Can't get item data" })
+      toast({
+        title: 'Error',
+        description: "Can't get item data",
+        variant: 'destructive'
+      })
       setNotfound(true)
     } finally {
       setTimeout(() => {
@@ -87,24 +96,16 @@ const StoreItemPage = () => {
     }
   }, [packId, pathname, toast])
 
-  const handlePurchase = useCallback(async () => {
-    setPurchasing(true)
-    try {
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setPurchasing(false)
-    }
-  }, [])
-
   useEffect(() => {
-    getData()
-  }, [getData])
+    packId && getData()
+  }, [getData, packId])
 
+  //TODO: When getting data
   if (loading) {
     return <LoadingScreen content={'Getting item'} />
   }
 
+  //TODO: When not getting data
   if (!packId || notfound)
     return (
       <motion.section
@@ -122,6 +123,8 @@ const StoreItemPage = () => {
         </Button>
       </motion.section>
     )
+
+  //TODO: Getted data
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -175,14 +178,14 @@ const StoreItemPage = () => {
                           </Button>
                         )}
                       </ConnectKitButton.Custom>
-                    ) : isApproved || isApproveSuccess ? (
+                    ) : isApproved ? (
                       <Button
                         className='w-full'
                         size='lg'
                         variant={'secondary'}
                         loading={purchasing}
-                        disable={loading || isApproved}
-                        onClick={() => handlePurchase()}
+                        disable={!isApproved || isCheckingAllowance}
+                        onClick={purchase}
                       >
                         Purchase
                       </Button>
