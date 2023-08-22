@@ -71,6 +71,12 @@ const formatFixedNumber = (number, displayDecimals = 18, decimals = 18) => {
   )
 }
 
+const formatFixedNumberToBigNumber = (number, decimal = 18) => {
+  // Convert to a BigNumber with desired precision
+  const bigNumberValue = ethers.utils.parseUnits(number.toString(), decimal)
+  return bigNumberValue
+}
+
 const formatBalance = {
   getDecimalAmount,
   formatFixedNumber,
@@ -79,7 +85,8 @@ const formatBalance = {
   formatNumber,
   getBalanceNumber,
   getBalanceAmount,
-  getFullDisplayBalance
+  getFullDisplayBalance,
+  formatFixedNumberToBigNumber
 }
 
 export default formatBalance

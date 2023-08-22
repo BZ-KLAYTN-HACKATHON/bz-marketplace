@@ -39,10 +39,10 @@ export const ROFI_PAYMENT = {
   H2P_DEPOSIT_SUBMISSION:
     PAYMENT_SERVICE_ENDPOINT + '/help2pay/deposit-submission',
   H2P_BANKCODE: process.env.REACT_APP_BANKLIST_URL || '',
-  PROCESSING_STORE_ORDER: (id) =>
+  PROCESSING_STORE_ORDER: (id: string) =>
     MARKETPLACE_SERVICE_ENDPOINT + `/store/orders/${id}/process`,
   GET_EXCHANGERATE: PAYMENT_SERVICE_ENDPOINT + '/common/exchange-rate',
-  CANCEL_STORE_ORDER: (id) =>
+  CANCEL_STORE_ORDER: (id: string) =>
     MARKETPLACE_SERVICE_ENDPOINT + `/store/orders/${id}/cancel`,
   XSOLLA: {
     GET_TOKEN: PAYMENT_SERVICE_ENDPOINT + '/xsolla/authentication-token',
@@ -55,14 +55,15 @@ const STORE_BLOCKCHAIN_SERVICE_ENDPOINT =
   process.env.REACT_APP_STORE_BLOCKCHAIN_SERVICE_ENDPOINT
 export const ROFI_STORE = {
   GET_ITEMS: MARKETPLACE_SERVICE_ENDPOINT + '/packs',
-  GET_ITEM_BY_PACKID: (id) => MARKETPLACE_SERVICE_ENDPOINT + '/packs/' + id,
+  GET_ITEM_BY_PACKID: (id: any) =>
+    MARKETPLACE_SERVICE_ENDPOINT + '/packs/' + id,
   GET_SIGNATURE: STORE_BLOCKCHAIN_SERVICE_ENDPOINT + '/check_order',
   STATISTICS: MARKETPLACE_SERVICE_ENDPOINT + '/statistics/store'
 }
 // MARKETPLACE PAGE
-export const ROFI_MARKETPLACE_ORDERS = {
+export const ROFI_MARKETPLACE_ORDERS: any = {
   LIST: MARKETPLACE_SERVICE_ENDPOINT + '/orders',
-  DETAIL: (id) => MARKETPLACE_SERVICE_ENDPOINT + '/orders/' + id,
+  DETAIL: (id: any) => MARKETPLACE_SERVICE_ENDPOINT + '/orders/' + id,
   STATISTICS: MARKETPLACE_SERVICE_ENDPOINT + '/statistics/market'
 }
 
@@ -73,9 +74,9 @@ const TOKEN_BLOCKCHAIN_SERVICE_ENDPOINT =
 export const ROFI_TOKEN = {
   BALANCE_ALL: TOKEN_SERVICE_ENDPOINT + '/tokens/balance/all',
   TRANSACTIONS: TOKEN_SERVICE_ENDPOINT + '/transactions',
-  GETBALANCEBYSYMBOL: (token) =>
+  GETBALANCEBYSYMBOL: (token: string) =>
     TOKEN_BLOCKCHAIN_SERVICE_ENDPOINT + `/${token}/balance`,
-  WITHDRAW_TOKEN: (token) =>
+  WITHDRAW_TOKEN: (token: string) =>
     TOKEN_BLOCKCHAIN_SERVICE_ENDPOINT + `/${token}/withdraw`
 }
 

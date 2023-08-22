@@ -3,10 +3,8 @@ import { useInView } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
 import { Loading } from 'components/utils'
-import { Link } from 'react-router-dom'
-import NftCardItem from './nft-card'
 
-export const ListItemInStore = ({ data, loading, getItems }) => {
+export const ListItemInStore = ({ children, data, loading, getItems }) => {
   const [isScrollDown, setIsScrollDown] = useState(false)
   const scrollTop = useRef(0)
 
@@ -41,21 +39,7 @@ export const ListItemInStore = ({ data, loading, getItems }) => {
         className='grid grid-cols-2 gap-x-[5px] gap-y-2.5 sm:grid-cols-2 md:grid-cols-4 md:gap-x-6 md:gap-y-6 xl:grid-cols-5'
         ref={animationParent}
       >
-        {data.map((item, idx) => (
-          <li className='col-span-1 cursor-pointer' key={idx}>
-            <Link to={`/store/item/${item.packId}`}>
-              <NftCardItem
-                className='col-span-1'
-                name={item.name}
-                dType={item?.detail?.type}
-                imageUrl={item.imageUrl}
-                videoUrl={item.videoUrl}
-                price={item.price}
-                amount={item.amountInStock}
-              />
-            </Link>
-          </li>
-        ))}
+        {children}
       </ul>
 
       <div className='opacity-1 mt-10 pb-5' ref={endOfCurrentListRef}>

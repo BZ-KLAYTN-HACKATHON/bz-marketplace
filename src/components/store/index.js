@@ -1,4 +1,5 @@
 export * from './banner'
 export * from './detail'
 export * from './list-item'
+export * from './nft-card'
 export * from './statistic'

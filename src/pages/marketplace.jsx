@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useWindowSize } from 'react-recipes'
 import { Link, useSearchParams } from 'react-router-dom'
 
-import storeApi from 'apis/store-api'
+import marketplaceApi from 'apis/marketplace-api'
 import BannerImage from 'assets/img/marketplace-banner.webp'
 import {
   Banner,
@@ -35,6 +35,7 @@ import { useToast } from 'components/ui/use-toast'
 import { raritysItem, sortsItem, typesItem } from 'data/store'
 import { useInput } from 'hooks'
 import { cn } from 'lib/utils'
+import formatBalance from 'utils/formatBalance'
 
 Object.fromMEntries = (params) => {
   const obj = {}
@@ -48,14 +49,12 @@ Object.fromMEntries = (params) => {
   return obj
 }
 
-const Home = () => {
+const Marketplace = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [sortValue, setSortValue] = useState(searchParams.get('sort'))
-  const [rarityValue, setRarityValue] = useState(
-    searchParams.getAll('detail.rarity')
-  )
-  const [typeValue, setTypeValue] = useState(searchParams.getAll('detail.type'))
+  const [rarityValue, setRarityValue] = useState(searchParams.getAll('rarity'))
+  const [typeValue, setTypeValue] = useState(searchParams.getAll('type'))
   const [data, setData] = useState([])
   const [pagination, setPagination] = useState({
     total: 0,
@@ -85,15 +84,13 @@ const Home = () => {
   const getStoreData = useCallback(async () => {
     setLoading(true)
     try {
-      const result = await storeApi.getItems(searchParamValues)
-
-      console.log(result.data)
+      const result = await marketplaceApi.getItems(searchParamValues)
       setData(result.data.data)
       setPagination(result.data.paginator)
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'Cannot get store item'
+        description: 'Cannot get marketplace item'
       })
       console.error(error)
     } finally {
@@ -107,7 +104,7 @@ const Home = () => {
     if (pagination.hasNextPage) {
       setLoading(true)
       try {
-        const result = await storeApi.getItems({
+        const result = await marketplaceApi.getItems({
           ...searchParamValues,
           page: pagination.next
         })
@@ -133,7 +130,7 @@ const Home = () => {
 
   return (
     <div className='ignore-nav'>
-      <Banner img={BannerImage} title={'Store'} />
+      <Banner img={BannerImage} title={'Marketplace'} />
       <motion.section
         className='ctn px-2.5 pb-8 pt-4'
         initial={{ opacity: 0 }}
@@ -232,7 +229,7 @@ const Home = () => {
               onChange={(_) => {
                 setSearchParams({
                   ...searchParamValues,
-                  'detail.rarity': _
+                  rarity: _
                 })
               }}
             />
@@ -245,7 +242,7 @@ const Home = () => {
               onChange={(_) => {
                 setSearchParams({
                   ...searchParamValues,
-                  'detail.type': _
+                  type: _
                 })
               }}
             />
@@ -259,15 +256,14 @@ const Home = () => {
           >
             {data.map((item, idx) => (
               <li className='col-span-1 cursor-pointer' key={idx}>
-                <Link to={`/store/item/${item.packId}`}>
+                <Link to={`/marketplace/${item?.collectionId}/${item.orderId}`}>
                   <NftCardItem
                     className='col-span-1'
-                    name={item.name}
-                    dType={item?.detail?.type}
-                    imageUrl={item.imageUrl}
-                    videoUrl={item.videoUrl}
-                    price={item.price}
-                    amount={item.amountInStock}
+                    name={item?.nft?.name}
+                    dType={item?.nft?.attributes?.type}
+                    imageUrl={item?.nft?.imageUrl}
+                    videoUrl={item?.nft?.videoUrl}
+                    price={formatBalance.formatFixedNumber(item?.price || 0n)}
                   />
                 </Link>
               </li>
@@ -279,7 +275,7 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Marketplace
 
 const MultipleSelect = ({ list, value, setValue, name = 'item', onChange }) => {
   const { width } = useWindowSize()

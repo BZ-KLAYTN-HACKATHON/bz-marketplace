@@ -9,6 +9,11 @@ import { WagmiConfig } from 'wagmi'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
+// eslint-disable-next-line no-extend-native
+Number.prototype.mod = function (n) {
+  return ((this % n) + n) % n
+}
+
 const customConnectKitTheme = {
   '--ck-primary-button-background': 'hsl(var(--primary-foreground))',
   '--ck-primary-button-hover-background': 'hsl(var(--primary))',

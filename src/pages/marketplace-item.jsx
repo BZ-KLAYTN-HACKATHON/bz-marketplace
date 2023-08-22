@@ -1,10 +1,10 @@
 import { ConnectKitButton } from 'connectkit'
 import { motion } from 'framer-motion'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAccount } from 'wagmi'
 
-import storeApi from 'apis/store-api'
+import marketplaceApi from 'apis/marketplace-api'
 import {
   DetailBaseStats,
   DetailDescription,
@@ -15,16 +15,13 @@ import {
 import { Button } from 'components/ui/button'
 import { useToast } from 'components/ui/use-toast'
 import { Breadcrumb, LoadingScreen } from 'components/utils'
-import { bnbChain } from 'configs/customChains'
-import { DanceTokenABI } from 'contract/abis'
-import { RG02_NFT_SHOP_ADDRESS, RG02_TOKEN_ADDRESS } from 'contract/addresses'
-import { useAllowance, useApprove } from 'hooks'
+import { truncateEthAddress } from 'utils'
 import formatBalance from 'utils/formatBalance'
 
-const StoreItemPage = () => {
+const MarketplaceItemPage = () => {
   const navigation = useNavigate()
   const { pathname } = useLocation()
-  const { packId } = useParams()
+  const { orderId } = useParams()
 
   const [breadcrumb, setBreadcrumb] = useState([])
   const [data, setData] = useState({})
@@ -34,42 +31,11 @@ const StoreItemPage = () => {
 
   const { address } = useAccount()
   const { toast } = useToast()
-
-  const {
-    isLoading: isCheckingAllowance,
-    isApproved,
-    refetch: refetchAllowance
-  } = useAllowance({
-    abi: DanceTokenABI,
-    args: [address, RG02_NFT_SHOP_ADDRESS[bnbChain.id]],
-    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
-    price: data?.price || 0
-  })
-  const {
-    write: writeApprove,
-    isLoading: isApproving,
-    isCheckingWallet,
-    isSuccess: isApproveSuccess
-  } = useApprove({
-    abi: DanceTokenABI,
-    args: [
-      RG02_NFT_SHOP_ADDRESS[bnbChain.id],
-      data?.price
-        ? formatBalance.formatFixedNumberToBigNumber(data.price).toString()
-        : 0n
-    ],
-    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
-    onSuccess: () => {
-      const sti = setInterval(() => {
-        if (isApproved) clearInterval(sti)
-        refetchAllowance()
-      }, 5000)
-    }
-  })
+  const nftData = useMemo(() => data?.nft || {}, [data])
 
   const getData = useCallback(async () => {
     try {
-      const result = await storeApi.getItemByPackId(packId)
+      const result = await marketplaceApi.getItemByOrderId(orderId)
       setData(result.data)
       setBreadcrumb(() => [
         { name: 'Store', link: '/store' },
@@ -85,7 +51,7 @@ const StoreItemPage = () => {
         setLoading(false)
       }, 1000)
     }
-  }, [packId, pathname, toast])
+  }, [orderId, pathname, toast])
 
   const handlePurchase = useCallback(async () => {
     setPurchasing(true)
@@ -105,7 +71,7 @@ const StoreItemPage = () => {
     return <LoadingScreen content={'Getting item'} />
   }
 
-  if (!packId || notfound)
+  if (!orderId || notfound)
     return (
       <motion.section
         className='ignore-nav flex h-screen flex-col items-center justify-center gap-4 text-center'
@@ -144,16 +110,18 @@ const StoreItemPage = () => {
             space-y-[10px] rounded-[5px] bg-primary-foreground
             p-[10px] md:gap-5 md:space-y-0 md:p-5'
           >
-            <DetailPreview imageUrl={data.imageUrl} videoUrl={data.videoUrl} />
+            <DetailPreview
+              imageUrl={nftData.imageUrl}
+              videoUrl={nftData.videoUrl}
+            />
 
             <div className='w-full space-y-[26px] md:w-[calc(100%-388px-1.25rem)]'>
               <div className=''>
-                <DetailIdentify name={data.name} />
+                <DetailIdentify name={nftData.name} />
                 <DetailPriceAndStock
                   className='mt-[10px] md:mt-5'
-                  price={data.price}
-                  unit='usd'
-                  stock={data.amountInStock}
+                  price={formatBalance.formatFixedNumber(data.price || 0n)}
+                  unit='idl'
                 />
               </div>
 
@@ -175,31 +143,16 @@ const StoreItemPage = () => {
                           </Button>
                         )}
                       </ConnectKitButton.Custom>
-                    ) : isApproved || isApproveSuccess ? (
-                      <Button
-                        className='w-full'
-                        size='lg'
-                        variant={'secondary'}
-                        loading={purchasing}
-                        disable={loading || isApproved}
-                        onClick={() => handlePurchase()}
-                      >
-                        Purchase
-                      </Button>
                     ) : (
                       <Button
                         className='w-full'
                         size='lg'
                         variant={'secondary'}
-                        loading={
-                          isApproving || isCheckingAllowance || isCheckingWallet
-                        }
-                        disabled={!writeApprove}
-                        onClick={() => {
-                          writeApprove?.()
-                        }}
+                        loading={purchasing}
+                        disable={loading || purchasing}
+                        onClick={() => handlePurchase()}
                       >
-                        Approve
+                        Buy
                       </Button>
                     )}
 
@@ -211,16 +164,17 @@ const StoreItemPage = () => {
               </div>
 
               <DetailDescription
-                gameDescription={data.gameDescription || ''}
-                collectionDescription={data.collectionDescription || ''}
-                itemDescription={data?.detail?.itemDescription || ''}
+                gameDescription={nftData?.gameDescription || ''}
+                collectionDescription={nftData?.collectionDescription || ''}
+                itemDescription={nftData?.itemDescription || ''}
               />
 
               <DetailBaseStats
-                dp={data?.detail?.dp || 0}
-                mdp={data?.detail?.mdp || 0}
-                earnPoint={data?.detail?.earnPoint || 0}
-                rarity={data?.detail?.rarity}
+                dp={nftData?.attributes?.dp || 0}
+                mdp={nftData?.attributes?.mdp || 0}
+                earnPoint={nftData?.attributes?.earnPoint || 0}
+                rarity={nftData?.attributes?.rarity}
+                owner={truncateEthAddress(data?.seller)}
               />
             </div>
           </div>
@@ -230,4 +184,4 @@ const StoreItemPage = () => {
   )
 }
 
-export default StoreItemPage
+export default MarketplaceItemPage

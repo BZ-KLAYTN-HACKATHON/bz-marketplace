@@ -115,7 +115,7 @@ const DetailBox = ({ children, title = '', className = '' }) => {
   )
 }
 
-export const DetailBaseStats = ({ rarity, mdp, dp, earnPoint }) => {
+export const DetailBaseStats = ({ rarity, mdp, dp, earnPoint, owner }) => {
   // eslint-disable-next-line no-unused-vars
   const rarityIcon = useMemo(() => {
     switch (rarity) {
@@ -158,6 +158,15 @@ export const DetailBaseStats = ({ rarity, mdp, dp, earnPoint }) => {
           </div>
         </div>
       </DetailBox>
+      {owner ? (
+        <DetailBox>
+          <div className='space-y-[11px]'>
+            <p className='text-center text-xs text-violet-100'>Owner</p>
+            <p className='text-center text-base text-white'>{owner}</p>
+          </div>
+        </DetailBox>
+      ) : null}
+
       <DetailBox>
         <h6 className='text-tw-400 mb-[11px] text-[15px] font-bold'>
           Base Stats

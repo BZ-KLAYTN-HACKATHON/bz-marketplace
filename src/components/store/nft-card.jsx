@@ -2,8 +2,9 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 import CoinIcon from 'assets/img/store/coin-icon.svg'
+import formatNumber from 'utils/formatNumber'
 
-const NftCardItem = ({
+export const NftCardItem = ({
   className = '',
   name,
   dType,
@@ -93,7 +94,7 @@ const NftCardItem = ({
             </div>
             {amount ? (
               <p className='stock text-xs text-white/[46%]'>
-                {amount} in stock
+                {formatNumber.formatNumberFollowThousand(amount || 0)} in stock
               </p>
             ) : null}
           </div>
@@ -102,5 +103,3 @@ const NftCardItem = ({
     </motion.div>
   )
 }
-
-export default NftCardItem

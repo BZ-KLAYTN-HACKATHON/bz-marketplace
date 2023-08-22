@@ -56,10 +56,10 @@ export const bnbChain = {
   network: 'bsc',
   rpcUrls: {
     default: {
-      http: ['https://bsc-rpc.gateway.pokt.network']
+      http: ['https://bsc-dataseed2.binance.org']
     },
     public: {
-      http: ['https://bsc-rpc.gateway.pokt.network']
+      http: ['https://bsc-dataseed2.binance.org']
     }
   },
   blockExplorers: {
