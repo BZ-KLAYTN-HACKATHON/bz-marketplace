@@ -97,16 +97,18 @@ const NavItem = ({ children, path, active }) => {
 
 const MobileNavItem = ({ icon, title, active = false, path = '', onClick }) => {
   return (
-    <Link
-      to={path}
-      className={cn(
-        'hover:text-highlight flex cursor-pointer flex-col items-center capitalize transition duration-150 ease-in-out',
-        active ? 'font-bold text-secondary' : 'font-normal text-white'
-      )}
-      onClick={() => onClick && onClick()}
-    >
-      <div className='h-7 w-7'>{icon}</div>
-      <p className=''>{title}</p>
-    </Link>
+    <div className='col-span-1'>
+      <Link
+        to={path}
+        className={cn(
+          'hover:text-highlight flex cursor-pointer flex-col items-center capitalize transition duration-150 ease-in-out',
+          active ? 'font-bold text-secondary' : 'font-normal text-white'
+        )}
+        onClick={() => onClick && onClick()}
+      >
+        <div className='h-7 w-7'>{icon}</div>
+        <p className=''>{title}</p>
+      </Link>
+    </div>
   )
 }
