@@ -32,9 +32,7 @@ export const Nav = () => {
               key={idx}
               path={item.path}
               isCurrent={matchPath(
-                `${item.path}${
-                  item.path[item.path.length - 1] !== '/' ? '/' : ''
-                }*`,
+                `${item.path}${item.path === '/' ? '' : '/*'}`,
                 pathname
               )}
             >

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="custom-scrollbar">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -22,6 +22,65 @@
     />
 
     <title>Idol World</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        transition: all 1s linear;
+      }
+
+      @supports (scrollbar-gutter: stable) {
+        html {
+          scrollbar-gutter: stable;
+        }
+      }
+
+      @supports not (scrollbar-gutter: stable) {
+        html {
+          overflow-y: scroll;
+        }
+      }
+
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        display: block !important;
+        background: transparent;
+        border-radius: 5px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:vertical {
+        border-radius: 5px;
+        background: #fff;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        width: 100%;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-thumb:horizontal {
+        border-radius: 5px;
+        background: #fff;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        height: 100%;
+      }
+    </style>
   </head>
   <body style="background: #081023">
     <noscript>You need to enable JavaScript to run this app.</noscript>
