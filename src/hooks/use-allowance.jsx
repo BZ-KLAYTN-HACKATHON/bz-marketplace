@@ -1,4 +1,5 @@
 import { bnbChain } from 'configs/customChains'
+import { useMemo } from 'react'
 import formatBalance from 'utils/formatBalance'
 import { useAccount, useContractRead } from 'wagmi'
 
@@ -6,7 +7,9 @@ export const useAllowance = ({
   abi = [],
   args = [],
   contractAddress = '',
-  price
+  price,
+  functionName = 'allowance',
+  type
 }) => {
   const { address } = useAccount()
 
@@ -15,18 +18,22 @@ export const useAllowance = ({
     args: [...args],
     address: contractAddress,
     enabled: Boolean(contractAddress) && Boolean(address),
-    functionName: 'allowance',
+    functionName,
     chainId: bnbChain.id
   })
+
+  const isApproved = useMemo(() => {
+    if (isLoading) return false
+    if (type === 'erc721') return Boolean(data)
+    return formatBalance.formatFixedNumber(data || -1) >= price
+  }, [data, isLoading, price, type])
 
   return {
     data,
     error,
     isLoading,
     isSuccess: isSuccess,
-    isApproved: isLoading
-      ? false
-      : formatBalance.formatFixedNumber(data || -1) >= price,
+    isApproved: isApproved,
     refetch
   }
 }

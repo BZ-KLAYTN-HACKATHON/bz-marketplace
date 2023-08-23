@@ -67,7 +67,7 @@ const StoreItemPage = () => {
   const { purchase, purchasing } = usePurchaseStore({
     allow: isApproveSuccess || isApproved,
     contractAddress: RG02_NFT_SHOP_ADDRESS[bnbChain.id],
-    packId: 1,
+    packId,
     onSuccess: () => refetchAllowance()
   })
 

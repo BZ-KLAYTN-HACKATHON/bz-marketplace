@@ -85,7 +85,7 @@ const NFT_SERVICE_ENDPOINT = env.REACT_APP_NFT_SERVICE_ENDPOINT
 const NFT_BLOCKCHAIN_SERVICE_ENDPOINT =
   env.REACT_APP_NFT_BLOCKCHAIN_SERVICE_ENDPOINT
 export const ROFI_NFT = {
-  INVENTORY: NFT_SERVICE_ENDPOINT + '/collections/RG-02/items', // ?accountId=${account_id}${account ? `&wallet=${account}
+  INVENTORY: NFT_SERVICE_ENDPOINT + '/collections/RG-02/items',
   ITEM: NFT_SERVICE_ENDPOINT + '/items', // /id
   MINT: NFT_BLOCKCHAIN_SERVICE_ENDPOINT + '/mint'
 }

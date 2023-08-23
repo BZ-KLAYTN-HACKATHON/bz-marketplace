@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { WagmiConfig } from 'wagmi'
 
+import { GlobalContextProvider } from 'contexts/global'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
@@ -51,7 +52,9 @@ root.render(
             walletConnectCTA: 'both'
           }}
         >
-          <App />
+          <GlobalContextProvider>
+            <App />
+          </GlobalContextProvider>
         </ConnectKitProvider>
       </WagmiConfig>
     </BrowserRouter>
