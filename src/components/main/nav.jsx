@@ -101,7 +101,7 @@ const MobileNavItem = ({ icon, title, active = false, path = '', onClick }) => {
       <Link
         to={path}
         className={cn(
-          'hover:text-highlight flex cursor-pointer flex-col items-center capitalize transition duration-150 ease-in-out',
+          'flex cursor-pointer flex-col items-center capitalize transition duration-150 ease-in-out hover:text-secondary',
           active ? 'font-bold text-secondary' : 'font-normal text-white'
         )}
         onClick={() => onClick && onClick()}

@@ -12,7 +12,8 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ["'Inter'", ...defaultTheme.fontFamily.sans],
-      'bai-jamjuree': ["'Bai Jamjuree'", 'sans-serif']
+      'bai-jamjuree': ["'Bai Jamjuree'", 'sans-serif'],
+      Baloo2: ["'Baloo 2'", 'cursive']
     },
     container: {
       center: true,
@@ -22,6 +23,10 @@ module.exports = {
       }
     },
     extend: {
+      screens: {
+        xs: '430px',
+        '3xl': '1600px'
+      },
       colors: {
         border: 'hsl(var(--border))',
         'border-foreground': 'hsla(var(--border-foreground))',

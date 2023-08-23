@@ -16,8 +16,8 @@
     --primary: 264 71% 50%;
     --primary-foreground: 264 69% 32%;
 
-    --secondary: 47 95% 57%;
-    --secondary-foreground: 300 23% 11%;
+    --secondary: 47 100% 50%;
+    --secondary-foreground: 224 61% 9%;
 
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
@@ -114,4 +114,23 @@
   background-image: radial-gradient(#00000000 1.2px, hsl(var(--primary)) 1px);
   background-size: 5px 5px;
   backdrop-filter: blur(5px);
+}
+
+.shadow-text-1 {
+  text-shadow: 0px 0px 10px rgba(244, 202, 121, 0.74);
+}
+.shadow-text-2 {
+  text-shadow: 0px 0px 10px rgba(240, 185, 11, 0.3);
+}
+.shadow-text-3 {
+  text-shadow: 0px 0px 10px rgba(32, 230, 252, 0.5);
+}
+
+.event-box {
+  border: 1px solid #7012e1;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px 0px rgba(227, 170, 255, 0.2);
+}
+.next-gradient {
+  background: linear-gradient(180deg, #cb62ff 0%, #00dfff 100%);
 }

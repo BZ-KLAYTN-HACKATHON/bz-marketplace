@@ -11,15 +11,18 @@ import { bnbChain, klaytnChain, klaytnTestnetChain } from './customChains'
 const { publicClient, chains } = configureChains(
   [bnbChain, mainnet, klaytnChain, klaytnTestnetChain],
   [
-    infuraProvider({ apiKey: process.env.REACT_APP_INFURA_ID }),
+    infuraProvider({
+      apiKey: process.env.REACT_APP_INFURA_ID
+    }),
     jsonRpcProvider({
       rpc: (chain) => {
         if (![].includes(chain.id)) return null
         return { http: chain.rpcUrls.default.http }
       }
     }),
-    publicProvider({ weight: 1 })
-  ]
+    publicProvider()
+  ],
+  { pollingInterval: 10_000, stallTimeout: 3_000 }
 )
 
 const initWagmiConfig = getDefaultConfig({

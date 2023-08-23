@@ -4,6 +4,7 @@ import { useLocation, useRoutes } from 'react-router-dom'
 
 import 'assets/css/App.css'
 import { DefaultLayout } from 'components/layouts'
+import Event from 'pages/event'
 import Home from 'pages/home'
 import Marketplace from 'pages/marketplace'
 import MarketplaceItemPage from 'pages/marketplace-item'
@@ -11,6 +12,7 @@ import StoreItemPage from 'pages/store-item'
 
 function App() {
   const element = useRoutes([
+    { path: '/event', element: <Event /> },
     {
       path: '/marketplace/:collectionId/:orderId',
       element: <MarketplaceItemPage />

@@ -9,3 +9,11 @@ export const truncateEthAddress = (address, separator = '••••') => {
   if (!match) return address
   return `${match[1]}${separator}${match[2]}`
 }
+
+export const moveElementInArray = (array, fromIndex, toIndex) => {
+  const element = array.splice(fromIndex, 1)[0]
+
+  array.splice(toIndex, 0, element)
+
+  return array
+}
