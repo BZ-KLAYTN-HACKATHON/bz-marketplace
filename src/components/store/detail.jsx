@@ -44,20 +44,20 @@ export const DetailPreview = ({ imageUrl, videoUrl }) => {
       </div>
 
       {/* <div
-          className='grid w-full grid-cols-2 gap-y-[19px] gap-x-[50px] rounded-[3px] 
-          bg-violet-400 px-5 py-[22px] pt-4'
-        >
-          <div className='col-span-1 gap-2'>
-            <h4 className='text-xs font-medium text-violet-100'>
-              Contract Address
-            </h4>
-            <p className='text-[13px] text-violet-250'>12345678</p>
-          </div>
-          <div className='col-span-1 gap-2'>
-            <h4 className='text-xs font-medium text-violet-100'>Network</h4>
-            <p className='text-[13px] text-violet-250'>Arbitrum</p>
-          </div>
-        </div> */}
+        className='grid w-full grid-cols-2 gap-x-[50px] gap-y-[19px] rounded-[3px] 
+        bg-primary px-5 py-[22px] pt-4'
+      >
+        <div className='col-span-1 gap-2'>
+          <h4 className='text-xs font-medium text-violet-100'>
+            Contract Address
+          </h4>
+          <p className='text-violet-250 text-[13px]'>{}</p>
+        </div>
+        <div className='col-span-1 gap-2'>
+          <h4 className='text-xs font-medium text-violet-100'>Network</h4>
+          <p className='text-violet-250 text-[13px]'>{bnbChain.name}</p>
+        </div>
+      </div> */}
     </div>
   )
 }
@@ -66,11 +66,20 @@ export const DetailPriceAndStock = ({
   className = '',
   price = 0,
   unit = 'USD',
-  stock
+  stock,
+  isInventory
 }) => {
   return (
     <p className={`flex items-center space-x-[10px] ${className}`}>
-      <span className='text-xl font-bold uppercase text-[#F9CC29]'>{`${price} ${unit}`}</span>
+      <span className='text-xl font-bold uppercase text-[#F9CC29]'>
+        {`${price || 0} ${unit}`}
+        {isInventory ? (
+          <span className='text-base font-normal normal-case text-white'>
+            {' '}
+            in Marketplace
+          </span>
+        ) : null}
+      </span>
       <span className='text-sm text-white/[46%]'>
         {stock
           ? stock > 0
@@ -80,6 +89,32 @@ export const DetailPriceAndStock = ({
       </span>
     </p>
   )
+}
+
+export const DetailPriceAndStockInInventory = ({
+  className = '',
+  price = 0,
+  unit = 'USD',
+  stock,
+  onMarketplace
+}) => {
+  return onMarketplace ? (
+    <p className={`flex items-center space-x-[10px] ${className}`}>
+      <span className='text-xl font-bold uppercase text-[#F9CC29]'>
+        <span className='text-base font-normal normal-case text-white'>
+          Selling on Marketplace:
+        </span>{' '}
+        {`${price || 0} ${unit}`}
+      </span>
+      <span className='text-sm text-white/[46%]'>
+        {stock
+          ? stock > 0
+            ? `${formatNumber.formatNumberFollowThousand(stock)} in stock`
+            : 'Out of stock'
+          : ''}
+      </span>
+    </p>
+  ) : null
 }
 
 export const DetailDescription = ({

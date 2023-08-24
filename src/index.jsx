@@ -16,19 +16,19 @@ Number.prototype.mod = function (n) {
 }
 
 const customConnectKitTheme = {
-  '--ck-primary-button-background': 'hsl(var(--primary-foreground))',
+  '--ck-primary-button-background': 'hsl(var(--primary-highlight))',
   '--ck-primary-button-hover-background': 'hsl(var(--primary))',
-  '--ck-secondary-button-background': 'hsl(var(--primary-foreground))',
+  '--ck-secondary-button-background': 'hsl(var(--primary-highlight))',
   '--ck-secondary-button-hover-background': 'hsl(var(--primary))',
   '--ck-tertiary-button-background': 'hsl(var(--primary))',
   '--ck-tertiary-button-hover-background': '#833DEF',
-  '--ck-body-background-tertiary': 'hsl(var(--primary-foreground))',
+  '--ck-body-background-tertiary': 'hsl(var(--primary-highlight))',
   '--ck-tooltip-color': 'hsl(var(--background))',
   '--ck-tooltip-background': 'hsl(var(--secondary))',
   '--ck-body-background': 'hsl(var(--background))',
   '--ck-connectbutton-balance-background': 'hsl(var(--background))',
   '--ck-connectbutton-balance-hover-background': 'transparent',
-  '--ck-body-disclaimer-background': 'hsl(var(--primary-foreground))',
+  '--ck-body-disclaimer-background': 'hsl(var(--primary-highlight))',
   '--ck-qr-border-color': 'hsl(var(--border))',
   '--ck-font-family': "'Bai Jamjuree', 'sans-serif'",
   '--ck-border-radius': '10px',

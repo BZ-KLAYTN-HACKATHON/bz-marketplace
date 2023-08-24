@@ -107,7 +107,7 @@ const MarketplaceItemPage = () => {
 
           <div
             className='font-primary flex flex-wrap
-            space-y-[10px] rounded-[5px] bg-primary-foreground
+            space-y-[10px] rounded-[5px] bg-primary-highlight
             p-[10px] md:gap-5 md:space-y-0 md:p-5'
           >
             <DetailPreview

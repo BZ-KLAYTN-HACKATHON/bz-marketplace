@@ -50,7 +50,7 @@ export const Statistic = ({ day: { one, seven, thirty }, showIn }) => {
             <li
               key={i}
               className={`cursor-pointer py-[9px]
-              ${i === tab.id ? 'bg-primary' : 'bg-primary-foreground'}`}
+              ${i === tab.id ? 'bg-primary' : 'bg-primary-highlight'}`}
               style={{ width: `calc(100% / ${sLength} - 2px)` }}
               onClick={() => setTab(i === 0 ? one : i === 1 ? seven : thirty)}
             >

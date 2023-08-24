@@ -9,7 +9,8 @@ import { Link, matchPath, useLocation } from 'react-router-dom'
 
 import { useGlobalContext } from 'contexts/global'
 import { cn } from 'lib/utils'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useAccount } from 'wagmi'
 import { Logo } from '.'
 
 export const Nav = () => {
@@ -38,10 +39,18 @@ export const Nav = () => {
         path: null,
         icon: <CubeIcon className='h-full w-full' />,
         right: true,
+        isPrivate: true,
         onClick: () => inventory.open()
       }
     ],
     [inventory]
+  )
+
+  const { address } = useAccount()
+
+  const allowShowPrivate = useCallback(
+    (privateValue) => !privateValue || (address && privateValue),
+    [address]
   )
 
   return (
@@ -53,30 +62,8 @@ export const Nav = () => {
           <ul className='hidden items-center gap-10 pl-[158px] md:flex'>
             {navList
               .filter((item) => !item?.right)
-              .map((item, idx) => (
-                <NavItem
-                  key={idx}
-                  path={item.path}
-                  active={
-                    item.path === '/'
-                      ? matchPath(`/`, pathname) ||
-                        matchPath(`/store/*`, pathname)
-                      : matchPath(`${item.path}/*`, pathname)
-                  }
-                  onClick={item?.onClick}
-                >
-                  {item.title}
-                </NavItem>
-              ))}
-          </ul>
-
-          <div className='block md:hidden'></div>
-
-          <div className='flex items-center gap-10'>
-            <ul className='hidden items-center gap-10 md:flex'>
-              {navList
-                .filter((item) => item?.right)
-                .map((item, idx) => (
+              .map((item, idx) =>
+                allowShowPrivate(item?.isPrivate) ? (
                   <NavItem
                     key={idx}
                     path={item.path}
@@ -88,22 +75,48 @@ export const Nav = () => {
                     }
                     onClick={item?.onClick}
                   >
-                    <div
-                      className={cn(
-                        'flex items-center gap-1',
+                    {item.title}
+                  </NavItem>
+                ) : null
+              )}
+          </ul>
+
+          <div className='block md:hidden'></div>
+
+          <div className='flex items-center gap-10'>
+            <ul className='hidden items-center gap-10 md:flex'>
+              {navList
+                .filter((item) => item?.right)
+                .map((item, idx) =>
+                  allowShowPrivate(item?.isPrivate) ? (
+                    <NavItem
+                      key={idx}
+                      path={item.path}
+                      active={
                         item.path === '/'
                           ? matchPath(`/`, pathname) ||
-                              matchPath(`/store/*`, pathname)
+                            matchPath(`/store/*`, pathname)
                           : matchPath(`${item.path}/*`, pathname)
-                          ? 'text-primary'
-                          : 'text-white'
-                      )}
+                      }
+                      onClick={item?.onClick}
                     >
-                      <div className='h-4 w-4'>{item.icon}</div>
-                      {item.title}
-                    </div>
-                  </NavItem>
-                ))}
+                      <div
+                        className={cn(
+                          'flex items-center gap-1',
+                          item.path === '/'
+                            ? matchPath(`/`, pathname) ||
+                                matchPath(`/store/*`, pathname)
+                            : matchPath(`${item.path}/*`, pathname)
+                            ? 'text-primary'
+                            : 'text-white'
+                        )}
+                      >
+                        <div className='h-4 w-4'>{item.icon}</div>
+                        {item.title}
+                      </div>
+                    </NavItem>
+                  ) : null
+                )}
             </ul>
             <ConnectKitButton showBalance={true} showAvatar={false} />
           </div>
@@ -116,20 +129,22 @@ export const Nav = () => {
           gridTemplateColumns: `repeat(${navList.length}, minmax(0, 1fr))`
         }}
       >
-        {navList.map(({ title, icon, path, onClick }, idx) => (
-          <MobileNavItem
-            key={idx}
-            icon={icon}
-            title={title}
-            active={
-              path === '/'
-                ? matchPath(`/`, pathname) || matchPath(`/store/*`, pathname)
-                : matchPath(`${path}/*`, pathname)
-            }
-            path={path}
-            onClick={onClick}
-          />
-        ))}
+        {navList.map(({ title, icon, path, isPrivate, onClick }, idx) =>
+          allowShowPrivate(isPrivate) ? (
+            <MobileNavItem
+              key={idx}
+              icon={icon}
+              title={title}
+              active={
+                path === '/'
+                  ? matchPath(`/`, pathname) || matchPath(`/store/*`, pathname)
+                  : matchPath(`${path}/*`, pathname)
+              }
+              path={path}
+              onClick={onClick}
+            />
+          ) : null
+        )}
       </div>
     </>
   )

@@ -33,13 +33,16 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle
 } from 'components/ui/sheet'
 import { useToast } from 'components/ui/use-toast'
+import { Pagination } from 'components/utils'
 import { useGlobalContext } from 'contexts/global'
 import { raritysItem, sortsItem, typesItem } from 'data/store'
 import { cn } from 'lib/utils'
+import formatBalance from 'utils/formatBalance'
 import { InventoryDetail } from './inventory-detail'
 import { ListItemInInventory } from './list-item'
 
@@ -62,7 +65,12 @@ const Inventory = () => {
     next: 2
   })
   const [loading, setLoading] = useState(false)
-  const [nftDetaiId, setNftDetaiId] = useState('')
+  const [nftCurrentIdx, setNftCurrentIdx] = useState(-1)
+  const [nftDetailId, setNftDetailId] = useState('')
+  const [nftNavidationId, setNftNavidationId] = useState({
+    prev: '',
+    next: ''
+  })
 
   const { address } = useAccount()
   const { inventory } = useGlobalContext()
@@ -78,6 +86,12 @@ const Inventory = () => {
     return sortsItem.find((item) => item.value === sortValue)
   }, [sortValue])
 
+  const onPageNumberChange = useCallback((number) => {
+    setPagination((prev) => ({ ...prev, currentPage: number }))
+  }, [])
+
+  const isSelling = useCallback((status) => status === 'Selling', [])
+
   const getItems = useCallback(async () => {
     setLoading(true)
     try {
@@ -86,7 +100,8 @@ const Inventory = () => {
         rarity: rarityValue,
         type: typeValue,
         sort: sortValue,
-        name: searchInput
+        name: searchInput,
+        page: pagination.currentPage
       })
       setData(result.data?.data)
       setPagination(result.data?.paginator)
@@ -99,14 +114,28 @@ const Inventory = () => {
     } finally {
       setLoading(false)
     }
-  }, [address, rarityValue, searchInput, sortValue, toast, typeValue])
+  }, [
+    address,
+    pagination.currentPage,
+    rarityValue,
+    searchInput,
+    sortValue,
+    toast,
+    typeValue
+  ])
+
+  const updateItem = useCallback((id, newValue) => {
+    setData((prev) =>
+      prev?.map((item) => (item.id === id ? { ...item, ...newValue } : item))
+    )
+  }, [])
 
   useEffect(() => {
-    inventory.visible && getItems()
-  }, [getItems, inventory.visible])
+    inventory.visible && address && getItems()
+  }, [address, getItems, inventory.visible])
 
   return (
-    <Sheet open={inventory.visible}>
+    <Sheet open={inventory.visible && Boolean(address)}>
       <SheetContent
         exit={inventory.close}
         overlayWillClose
@@ -115,13 +144,10 @@ const Inventory = () => {
         <SheetHeader>
           <SheetTitle className='text-2xl'>Inventory</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            Welcome to your NFT Item Inventory! This is where your unique
+            digital assets come to life.
           </SheetDescription>
-        </SheetHeader>
-
-        <div className='mt-5'>
-          <div className='mb-2.5 flex w-full flex-col items-center justify-between gap-2.5 md:mb-[29px] md:flex-row'>
+          <div className='mb-2.5 flex w-full flex-col items-center justify-between gap-2.5 pt-2 md:flex-row'>
             <Input
               parentClass='w-full max-w-[400px]'
               type='text'
@@ -185,41 +211,77 @@ const Inventory = () => {
               />
             </div>
           </div>
+        </SheetHeader>
 
-          <motion.div className=''>
-            <ListItemInInventory
-              data={data}
-              loading={loading}
-              getItems={() => {}}
-            >
-              {data.map((item, idx) => (
-                <li
-                  className='col-span-1 cursor-pointer'
-                  key={idx}
-                  onClick={() => {
-                    setNftDetaiId(item?.id)
-                    enableDetailItem()
-                  }}
-                >
-                  <NftCardItem
-                    className='col-span-1'
-                    name={item.name}
-                    dType={item?.attributes?.type}
-                    imageUrl={item.imageUrl}
-                    videoUrl={item.videoUrl}
-                    nftId={item?.nftId ? `#${item.nftId}` : ''}
-                  />
-                </li>
-              ))}
-            </ListItemInInventory>
-          </motion.div>
-        </div>
+        <motion.div className='custom-scrollbar flex-[1_1_0%] overflow-auto'>
+          <ListItemInInventory loading={loading} getItems={() => {}}>
+            {data.map((item, idx) => (
+              <li
+                className='col-span-1 cursor-pointer'
+                key={idx}
+                onClick={() => {
+                  setNftDetailId(item?.id)
+                  setNftCurrentIdx(idx)
+                  setNftNavidationId({
+                    prev: data[idx - 1]?.id || null,
+                    next: data[idx + 1]?.id || null
+                  })
+                  enableDetailItem()
+                }}
+              >
+                <NftCardItem
+                  className='col-span-1'
+                  name={item.name}
+                  dType={item?.attributes?.type}
+                  imageUrl={item.imageUrl}
+                  videoUrl={item.videoUrl}
+                  nftId={item?.nftId ? `${item.nftId}` : ''}
+                  price={
+                    isSelling(item?.status)
+                      ? formatBalance.formatFixedNumber(item?.price || 0n)
+                      : null
+                  }
+                  onMarketplace={isSelling(item?.status)}
+                />
+              </li>
+            ))}
+          </ListItemInInventory>
+        </motion.div>
+
+        <SheetFooter>
+          <div className='flex w-full items-center justify-between font-bai-jamjuree'>
+            <p>
+              {data?.length || 0} / {pagination.total} item
+              {pagination.total > 1 ? 's' : ''}
+            </p>
+            <Pagination
+              className='w-max'
+              current={pagination.currentPage}
+              total={pagination.total}
+              onChange={onPageNumberChange}
+            />
+          </div>
+        </SheetFooter>
       </SheetContent>
+
       <InventoryDetail
-        id={nftDetaiId}
+        id={nftDetailId}
         open={detailItemVisible}
         exit={disableDetailItem}
         style={{ width: `${w}px` }}
+        prevId={nftNavidationId.prev}
+        nextId={nftNavidationId.next}
+        setId={(newId, isIncrease) => {
+          setNftDetailId(newId)
+          setNftNavidationId({
+            prev:
+              data[isIncrease ? nftCurrentIdx : nftCurrentIdx - 2]?.id || null,
+            next:
+              data[isIncrease ? nftCurrentIdx + 2 : nftCurrentIdx]?.id || null
+          })
+          setNftCurrentIdx(isIncrease ? nftCurrentIdx + 1 : nftCurrentIdx - 1)
+        }}
+        onUpdate={updateItem}
       />
     </Sheet>
   )

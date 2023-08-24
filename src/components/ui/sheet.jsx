@@ -58,7 +58,7 @@ const SheetContent = React.forwardRef(
         ref={ref}
         className={cn(
           sheetVariants({ side }),
-          'transition-all duration-300 ease-in-out',
+          'flex max-h-screen flex-col transition-all duration-300 ease-in-out',
           className
         )}
         {...props}
@@ -80,7 +80,7 @@ SheetContent.displayName = SheetPrimitive.Content.displayName
 const SheetHeader = ({ className, ...props }) => (
   <div
     className={cn(
-      'flex flex-col space-y-2 text-center sm:text-left',
+      'flex flex-[0_1_0%] flex-col space-y-2 text-center sm:text-left',
       className
     )}
     {...props}

@@ -1,10 +1,10 @@
-import { ConnectKitButton } from 'connectkit'
 import { motion } from 'framer-motion'
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAccount } from 'wagmi'
 
 import storeApi from 'apis/store-api'
+import { ConnectButtonPre } from 'components/connectkit'
 import {
   DetailBaseStats,
   DetailDescription,
@@ -132,7 +132,7 @@ const StoreItemPage = () => {
       exit={{ opacity: 0 }}
     >
       <div
-        className='ignore-nav font-secondary min-h-screen w-full p-0 px-[10px]
+        className='ignore-nav min-h-screen w-full p-0 px-[10px]
         font-bai-jamjuree text-neutral-50 md:p-5'
       >
         <div
@@ -143,9 +143,8 @@ const StoreItemPage = () => {
           <Breadcrumb data={breadcrumb} />
 
           <div
-            className='font-primary flex flex-wrap
-            space-y-[10px] rounded-[5px] bg-primary-foreground
-            p-[10px] md:gap-5 md:space-y-0 md:p-5'
+            className='flex flex-wrap space-y-[10px] rounded-[5px] bg-primary-highlight
+            p-2.5 md:gap-5 md:space-y-0 md:p-5'
           >
             <DetailPreview imageUrl={data.imageUrl} videoUrl={data.videoUrl} />
 
@@ -163,48 +162,37 @@ const StoreItemPage = () => {
               <div className='my-[10px] md:mb-[15px] md:mt-5'>
                 {data.amountInStock === 0 ? null : (
                   <div>
-                    {!address ? (
-                      <ConnectKitButton.Custom>
-                        {({ show, isConnecting }) => (
-                          <Button
-                            className='w-full text-white'
-                            size='lg'
-                            disable={isConnecting}
-                            onClick={show}
-                          >
-                            {isConnecting
-                              ? 'Submit on wallet'
-                              : 'Connect wallet to order'}
-                          </Button>
-                        )}
-                      </ConnectKitButton.Custom>
-                    ) : isApproved ? (
-                      <Button
-                        className='w-full'
-                        size='lg'
-                        variant={'secondary'}
-                        loading={purchasing}
-                        disable={!isApproved || isCheckingAllowance}
-                        onClick={purchase}
-                      >
-                        Purchase
-                      </Button>
-                    ) : (
-                      <Button
-                        className='w-full'
-                        size='lg'
-                        variant={'secondary'}
-                        loading={
-                          isApproving || isCheckingAllowance || isCheckingWallet
-                        }
-                        disabled={!writeApprove}
-                        onClick={() => {
-                          writeApprove?.()
-                        }}
-                      >
-                        Approve
-                      </Button>
-                    )}
+                    <ConnectButtonPre>
+                      {isApproved ? (
+                        <Button
+                          className='w-full'
+                          size='lg'
+                          variant={'secondary'}
+                          loading={purchasing}
+                          disable={!isApproved || isCheckingAllowance}
+                          onClick={purchase}
+                        >
+                          Purchase
+                        </Button>
+                      ) : (
+                        <Button
+                          className='w-full'
+                          size='lg'
+                          variant={'secondary'}
+                          loading={
+                            isApproving ||
+                            isCheckingAllowance ||
+                            isCheckingWallet
+                          }
+                          disabled={!writeApprove}
+                          onClick={() => {
+                            writeApprove?.()
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      )}
+                    </ConnectButtonPre>
 
                     <p className='mt-[7px] text-center font-bai-jamjuree text-sm text-[#ba92ba]'>
                       We accept payments by crypto

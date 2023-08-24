@@ -6,10 +6,12 @@ import { useAccount, useContractRead } from 'wagmi'
 export const useAllowance = ({
   abi = [],
   args = [],
+  allow = true,
   contractAddress = '',
   price,
   functionName = 'allowance',
-  type
+  type,
+  spender = ''
 }) => {
   const { address } = useAccount()
 
@@ -17,16 +19,20 @@ export const useAllowance = ({
     abi,
     args: [...args],
     address: contractAddress,
-    enabled: Boolean(contractAddress) && Boolean(address),
+    enabled: Boolean(contractAddress) && Boolean(address) && allow,
     functionName,
     chainId: bnbChain.id
   })
 
   const isApproved = useMemo(() => {
     if (isLoading) return false
-    if (type === 'erc721') return Boolean(data)
+    if (type === 'erc721') {
+      return spender && data
+        ? data?.toLowerCase() === spender?.toLowerCase()
+        : false
+    }
     return formatBalance.formatFixedNumber(data || -1) >= price
-  }, [data, isLoading, price, type])
+  }, [data, isLoading, price, spender, type])
 
   return {
     data,

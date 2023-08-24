@@ -14,7 +14,8 @@
     --popover-foreground: 0 0% 98%;
 
     --primary: 264 71% 50%;
-    --primary-foreground: 264 69% 32%;
+    --primary-foreground: 0 0% 98%;
+    --primary-highlight: 264 69% 32%;
 
     --secondary: 47 100% 50%;
     --secondary-foreground: 224 61% 9%;
@@ -30,6 +31,7 @@
 
     --border: 264 71% 50%;
     --border-foreground: 264, 71%, 50%, 0.28;
+
     --input: 264 71% 50%;
     --ring: 264 71% 40%;
 

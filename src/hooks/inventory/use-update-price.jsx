@@ -7,7 +7,7 @@ import { useContractWrite, useWaitForTransaction } from 'wagmi'
 
 const contractAddress = RG02_NFT_MARKET_ADDRESS[bnbChain.id]
 
-export const useSellInventory = ({
+export const useUpdatePriceInventory = ({
   allow = true,
   // args = [], //[nftAddress, tokenId, paymentToken, price]
   onSuccess = () => {}
@@ -19,7 +19,7 @@ export const useSellInventory = ({
       abi: MarketplaceNFTABI,
       address: contractAddress,
       enabled: Boolean(contractAddress) && allow,
-      functionName: 'placeOrder'
+      functionName: 'updatePrice'
     })
 
   const {
@@ -33,13 +33,13 @@ export const useSellInventory = ({
     onSuccess: () => {
       onSuccess()
       toast({
-        title: 'Selled',
-        description: 'The item is already in the Marketplace'
+        title: 'Updated',
+        description: 'The NFT item has been successfully changed in value'
       })
     }
   })
 
-  const handleSell = useCallback(
+  const handleWriteContract = useCallback(
     async (args) => {
       try {
         await writeAsync?.({ args })
@@ -57,10 +57,10 @@ export const useSellInventory = ({
   return {
     data: receipt,
     error: error || errorWhenTransction,
-    selling: isPending || isLoading,
+    updating: isPending || isLoading,
     paid: isSuccess,
     isError: isError || isErrorWhenTransction,
-    sell: handleSell,
+    update: handleWriteContract,
     reset
   }
 }
