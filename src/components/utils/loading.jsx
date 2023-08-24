@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion'
 import Lottie from 'lottie-react'
 
+import loadingInfinityWhite from 'assets/json/loading-infinity-white.json'
 import loadingInfinity from 'assets/json/loading-infinity.json'
 import { cn } from 'lib/utils'
 
-export function Loading(props) {
+export function Loading({ type = 'normal' }) {
   return (
     <motion.div
       className=''
@@ -12,7 +13,12 @@ export function Loading(props) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Lottie animationData={loadingInfinity} loop={true} />
+      <Lottie
+        animationData={
+          type === 'white' ? loadingInfinityWhite : loadingInfinity
+        }
+        loop={true}
+      />
     </motion.div>
   )
 }

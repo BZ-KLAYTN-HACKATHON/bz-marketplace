@@ -112,10 +112,6 @@ const Home = () => {
         setData((prev) => [...prev, ...result.data.data])
         setPagination(result.data.paginator)
       } catch (error) {
-        toast({
-          title: 'Error',
-          description: 'Cannot get store item'
-        })
         console.error(error)
       } finally {
         setTimeout(() => {
@@ -123,7 +119,7 @@ const Home = () => {
         }, 2000)
       }
     }
-  }, [pagination.hasNextPage, pagination.next, searchParamValues, toast])
+  }, [pagination.hasNextPage, pagination.next, searchParamValues])
 
   useEffect(() => {
     getStoreData()

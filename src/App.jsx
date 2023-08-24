@@ -26,13 +26,11 @@ function App() {
   const location = useLocation()
 
   return (
-    <div className=''>
-      <DefaultLayout>
-        <AnimatePresence mode='wait' initial={false}>
-          {cloneElement(element, { key: location.pathname })}
-        </AnimatePresence>
-      </DefaultLayout>
-    </div>
+    <DefaultLayout>
+      <AnimatePresence mode='wait' initial={false}>
+        {cloneElement(element, { key: location.pathname })}
+      </AnimatePresence>
+    </DefaultLayout>
   )
 }
 

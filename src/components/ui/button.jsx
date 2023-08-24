@@ -44,6 +44,7 @@ const Button = React.forwardRef(
       asChild = false,
       children,
       loading,
+      loadingType,
       disabled,
       ...props
     },
@@ -59,7 +60,13 @@ const Button = React.forwardRef(
       >
         {loading ? (
           <div className='h-max'>
-            <Loading />
+            <Loading
+              type={
+                !variant || variant === 'default' || loadingType === 'white'
+                  ? 'white'
+                  : 'normal'
+              }
+            />
           </div>
         ) : (
           children

@@ -1,4 +1,5 @@
 import DanceTokenABI from './dance-token.json'
+import MarketplaceNFTABI from './rg02-nft-market.json'
 import ShopNFTABI from './shop-nft.json'
 
-export { DanceTokenABI, ShopNFTABI }
+export { DanceTokenABI, MarketplaceNFTABI, ShopNFTABI }

@@ -2,6 +2,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 import CoinIcon from 'assets/img/store/coin-icon.svg'
+import { cn } from 'lib/utils'
 import formatNumber from 'utils/formatNumber'
 
 export const NftCardItem = ({
@@ -12,7 +13,9 @@ export const NftCardItem = ({
   videoUrl,
   price,
   amount,
-  nftId
+  nftId,
+  unit = 'IDL',
+  onMarketplace
 }) => {
   const itemRef = useRef(null)
   const inViewport = useInView(itemRef, {
@@ -29,7 +32,7 @@ export const NftCardItem = ({
     >
       <div
         className={`rounded-[10px] border-2
-				border-border-foreground bg-primary-foreground p-2.5 text-primary md:p-[15px]
+				border-border-foreground bg-primary-highlight p-2.5 text-primary md:p-[15px]
 				${className}`}
       >
         {/* Identify */}
@@ -78,27 +81,34 @@ export const NftCardItem = ({
         </div>
 
         {/* Price */}
-        {price ? (
-          <div
-            className={`flex items-center ${
-              amount ? 'justify-between' : 'justify-center'
-            }`}
-          >
-            <div className='price flex items-center justify-center'>
-              <div className='hidden h-[23px] w-[23px]'>
-                <img src={CoinIcon} alt='coin' className='h-full w-full' />
-              </div>
-              <p className='font-primary text-sm font-bold text-[#F9CC29] md:text-base'>
-                {price} <span>USD</span>
-              </p>
+        <div
+          className={`flex items-center ${
+            amount || onMarketplace ? 'justify-between' : 'justify-center'
+          }`}
+        >
+          <div className='price flex items-center justify-center'>
+            <div className='hidden h-[23px] w-[23px]'>
+              <img src={CoinIcon} alt='coin' className='h-full w-full' />
             </div>
-            {amount ? (
-              <p className='stock text-xs text-white/[46%]'>
-                {formatNumber.formatNumberFollowThousand(amount || 0)} in stock
-              </p>
-            ) : null}
+            <p
+              className={cn(
+                'font-primary text-sm font-bold text-[#F9CC29] md:text-base',
+                price ? '' : 'hidden'
+              )}
+            >
+              {price || 0} <span>{unit}</span>
+            </p>
+            {!price ? <p className='text-white/75'>Available</p> : null}
           </div>
-        ) : null}
+          {amount ? (
+            <p className='stock text-xs text-white/[46%]'>
+              {formatNumber.formatNumberFollowThousand(amount || 0)} in stock
+            </p>
+          ) : null}
+          {onMarketplace ? (
+            <p className='stock text-xs text-white/[46%]'>on Marketplace</p>
+          ) : null}
+        </div>
       </div>
     </motion.div>
   )

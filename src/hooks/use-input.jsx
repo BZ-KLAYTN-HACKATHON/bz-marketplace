@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useInput = (initialValue = '') => {
   const [value, setValue] = useState(initialValue)
+
+  useEffect(() => setValue(initialValue), [initialValue])
 
   return {
     value,

@@ -6,6 +6,7 @@ import {
 
 export const useApprove = ({
   abi = [],
+  allow = true,
   args = [],
   contractAddress = '',
   onSuccess = () => {}
@@ -14,7 +15,7 @@ export const useApprove = ({
     abi,
     address: contractAddress,
     args: [...args],
-    enabled: Boolean(contractAddress),
+    enabled: Boolean(contractAddress) && allow,
     functionName: 'approve'
   })
 
