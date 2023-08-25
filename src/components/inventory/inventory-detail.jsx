@@ -11,7 +11,11 @@ import { erc721ABI, useAccount } from 'wagmi'
 
 import userApi from 'apis/user-api'
 import { ConnectButtonPre } from 'components/connectkit'
-import { CancelOrder, SellNFT } from 'components/modals/inventory'
+import {
+  CancelOrder,
+  FailedToFetch,
+  SellNFT
+} from 'components/modals/inventory'
 import {
   DetailBaseStats,
   DetailDescription,
@@ -77,6 +81,8 @@ export const InventoryDetail = ({
     disable: disableCancelOrderModal,
     visible: cancelOrderModalVisible
   } = useToggle()
+  const { enable: enableFetchFailedModal, visible: fetchFailedModalVisible } =
+    useToggle()
 
   // Init params of contracts
   const initSellParams = useMemo(
@@ -209,15 +215,15 @@ export const InventoryDetail = ({
       }
 
       const sti = setInterval(() => {
-        if (loop >= 8) {
+        if (loop >= 7) {
           clearInterval(sti)
-          setReload(false)
+          enableFetchFailedModal()
         }
         ++loop
         fc(() => setReload(false))
       }, 1000)
     },
-    [id]
+    [enableFetchFailedModal, id]
   )
 
   useEffect(() => {
@@ -441,6 +447,13 @@ export const InventoryDetail = ({
           disable={!isApproved || isCheckingAllowance}
           exit={disableCancelOrderModal}
           onSubmit={cancel}
+        />
+
+        <FailedToFetch
+          open={fetchFailedModalVisible}
+          onClick={() => {
+            window.location.reload()
+          }}
         />
       </SheetContent>
     </Sheet>
