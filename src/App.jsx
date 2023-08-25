@@ -14,7 +14,7 @@ function App() {
   const element = useRoutes([
     { path: '/event', element: <Event /> },
     {
-      path: '/marketplace/:collectionId/:orderId',
+      path: '/marketplace/:orderId',
       element: <MarketplaceItemPage />
     },
     { path: '/marketplace', element: <Marketplace /> },

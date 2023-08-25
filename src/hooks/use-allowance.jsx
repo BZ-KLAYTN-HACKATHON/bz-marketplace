@@ -1,5 +1,5 @@
-import { useAccount, useContractRead } from 'wagmi'
 import { useMemo } from 'react'
+import { useAccount, useContractRead } from 'wagmi'
 
 import { bnbChain } from 'configs/customChains'
 import formatBalance from 'utils/formatBalance'
@@ -32,7 +32,7 @@ export const useAllowance = ({
         ? data?.toLowerCase() === spender?.toLowerCase()
         : false
     }
-    return formatBalance.formatFixedNumber(data || -1) >= price
+    return Number(formatBalance.formatFixedNumber(data || -1)) >= Number(price)
   }, [data, isLoading, price, spender, type])
 
   return {
