@@ -1,9 +1,10 @@
+import { useCallback } from 'react'
+import { useContractWrite, useWaitForTransaction } from 'wagmi'
+
 import { useToast } from 'components/ui/use-toast'
 import { bnbChain } from 'configs/customChains'
 import { MarketplaceNFTABI } from 'contract/abis'
 import { RG02_NFT_MARKET_ADDRESS } from 'contract/addresses'
-import { useCallback } from 'react'
-import { useContractWrite, useWaitForTransaction } from 'wagmi'
 
 const contractAddress = RG02_NFT_MARKET_ADDRESS[bnbChain.id]
 

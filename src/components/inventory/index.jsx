@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/20/solid'
 import { motion } from 'framer-motion'
 import { useInput, useToggle } from 'hooks'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useWindowSize } from 'react-recipes'
 import { useAccount } from 'wagmi'
 
@@ -22,14 +22,6 @@ import {
 import { Input } from 'components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover'
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from 'components/ui/select'
-import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -40,7 +32,7 @@ import {
 import { useToast } from 'components/ui/use-toast'
 import { Pagination } from 'components/utils'
 import { useGlobalContext } from 'contexts/global'
-import { raritysItem, sortsItem, typesItem } from 'data/store'
+import { raritysItem, typesItem } from 'data/store'
 import { cn } from 'lib/utils'
 import formatBalance from 'utils/formatBalance'
 import { InventoryDetail } from './inventory-detail'
@@ -49,7 +41,6 @@ import { ListItemInInventory } from './list-item'
 const w = 1100
 
 const Inventory = () => {
-  const [sortValue, setSortValue] = useState(null)
   const [rarityValue, setRarityValue] = useState([])
   const [typeValue, setTypeValue] = useState([])
   const [data, setData] = useState([])
@@ -82,10 +73,6 @@ const Inventory = () => {
   } = useToggle()
   const { toast } = useToast()
 
-  const sortItemSelectedConfig = useMemo(() => {
-    return sortsItem.find((item) => item.value === sortValue)
-  }, [sortValue])
-
   const onPageNumberChange = useCallback((number) => {
     setPagination((prev) => ({ ...prev, currentPage: number }))
   }, [])
@@ -99,7 +86,6 @@ const Inventory = () => {
         nftOwner: address,
         rarity: rarityValue,
         type: typeValue,
-        sort: sortValue,
         name: searchInput,
         page: pagination.currentPage
       })
@@ -119,7 +105,6 @@ const Inventory = () => {
     pagination.currentPage,
     rarityValue,
     searchInput,
-    sortValue,
     toast,
     typeValue
   ])
@@ -149,7 +134,7 @@ const Inventory = () => {
           </SheetDescription>
           <div className='mb-2.5 flex w-full flex-col items-center justify-between gap-2.5 pt-2 md:flex-row'>
             <Input
-              parentClass='w-full max-w-[400px]'
+              parentClass='w-full md:max-w-[400px]'
               type='text'
               placeholder='Type a command or search...'
               icon={{ icon: MagnifyingGlassIcon }}
@@ -160,42 +145,6 @@ const Inventory = () => {
               }}
             />
             <div className='flex w-full items-center justify-center gap-2.5 md:w-max md:justify-start md:gap-[18px]'>
-              <Select
-                onValueChange={(value) => {
-                  setSortValue(value)
-                }}
-              >
-                <SelectTrigger className='w-[180px]'>
-                  <SelectValue
-                    placeholder={
-                      sortValue ? (
-                        <div className='flex items-center gap-2'>
-                          <sortItemSelectedConfig.icon className='h-4 w-4 text-white' />
-                          {
-                            sortsItem.find((item) => item.value === sortValue)
-                              .label
-                          }
-                        </div>
-                      ) : (
-                        'Sort by...'
-                      )
-                    }
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {sortsItem.map((item) => (
-                      <SelectItem value={item.value} key={item.value}>
-                        <div className='flex items-center gap-2'>
-                          <item.icon className='h-4 w-4 text-white' />
-                          {item.label}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-
               <MultipleSelect
                 name={'rarity'}
                 list={raritysItem}
@@ -298,7 +247,7 @@ const MultipleSelect = ({ list, value, setValue, name = 'item' }) => {
         <Button
           variant='outline'
           role='combobox'
-          className='w-max min-w-[90px] justify-between md:min-w-[120px]'
+          className='w-full min-w-[90px] justify-between md:min-w-[120px]'
         >
           {value?.length ? (
             width < 640 ? (

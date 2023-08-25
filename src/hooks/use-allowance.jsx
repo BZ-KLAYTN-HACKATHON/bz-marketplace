@@ -1,7 +1,8 @@
-import { bnbChain } from 'configs/customChains'
-import { useMemo } from 'react'
-import formatBalance from 'utils/formatBalance'
 import { useAccount, useContractRead } from 'wagmi'
+import { useMemo } from 'react'
+
+import { bnbChain } from 'configs/customChains'
+import formatBalance from 'utils/formatBalance'
 
 export const useAllowance = ({
   abi = [],
