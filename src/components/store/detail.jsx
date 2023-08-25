@@ -201,7 +201,7 @@ export const DetailBaseStats = ({ rarity, mdp, dp, earnPoint, owner }) => {
       {owner ? (
         <DetailBox>
           <div className='space-y-[11px]'>
-            <p className='text-center text-xs text-violet-100'>Owner</p>
+            <p className='text-center text-xs text-violet-100'>Seller</p>
             <p className='text-center text-base text-white'>{owner}</p>
           </div>
         </DetailBox>

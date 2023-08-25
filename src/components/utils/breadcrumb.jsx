@@ -9,8 +9,8 @@ export const Breadcrumb = ({ data, className = '' }) => {
           <Link to={link} key={`${name}${idx}`}>
             <div className='flex items-center gap-2 text-sm'>
               <span
-                className={`hover:text-white
-                ${idx === data.length - 1 ? 'text-white' : 'text-tw-200'}`}
+                className={`hover:text-violet-500
+                ${idx === data.length - 1 ? 'text-white' : 'text-white'}`}
               >
                 {name}
               </span>

@@ -252,13 +252,14 @@ const Marketplace = () => {
           >
             {data.map((item, idx) => (
               <li className='col-span-1 cursor-pointer' key={idx}>
-                <Link to={`/marketplace/${item?.collectionId}/${item.orderId}`}>
+                <Link to={`/marketplace/${item.orderId}`}>
                   <NftCardItem
                     className='col-span-1'
                     name={item?.nft?.name}
                     dType={item?.nft?.attributes?.type}
                     imageUrl={item?.nft?.imageUrl}
                     videoUrl={item?.nft?.videoUrl}
+                    nftId={item?.nft?.nftId}
                     price={formatBalance.formatFixedNumber(item?.price || 0n)}
                   />
                 </Link>

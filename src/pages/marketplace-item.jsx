@@ -1,10 +1,11 @@
-import { ConnectKitButton } from 'connectkit'
 import { motion } from 'framer-motion'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAccount } from 'wagmi'
 
 import marketplaceApi from 'apis/marketplace-api'
+import { ConnectButtonPre } from 'components/connectkit'
+import { SuccessModal } from 'components/modals'
 import {
   DetailBaseStats,
   DetailDescription,
@@ -15,6 +16,11 @@ import {
 import { Button } from 'components/ui/button'
 import { useToast } from 'components/ui/use-toast'
 import { Breadcrumb, LoadingScreen } from 'components/utils'
+import { bnbChain } from 'configs/customChains'
+import { DanceTokenABI } from 'contract/abis'
+import { RG02_NFT_MARKET_ADDRESS, RG02_TOKEN_ADDRESS } from 'contract/addresses'
+import { useAllowance, useApprove, useToggle } from 'hooks'
+import { usePurchaseMarket } from 'hooks/marketplace'
 import { truncateEthAddress } from 'utils'
 import formatBalance from 'utils/formatBalance'
 
@@ -27,20 +33,66 @@ const MarketplaceItemPage = () => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
   const [notfound, setNotfound] = useState(false)
-  const [purchasing, setPurchasing] = useState(false)
 
   const { address } = useAccount()
   const { toast } = useToast()
+  const { visible, enable, disable } = useToggle()
   const nftData = useMemo(() => data?.nft || {}, [data])
+  const isOwner = useMemo(
+    () => data?.seller === address,
+    [address, data?.seller]
+  )
+
+  // Check and process APPROVE item then return current data/status
+  const {
+    isLoading: isCheckingAllowance,
+    isApproved,
+    refetch: refetchAllowance
+  } = useAllowance({
+    abi: DanceTokenABI,
+    allow: !isOwner,
+    args: [address, RG02_NFT_MARKET_ADDRESS[bnbChain.id]],
+    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
+    price: formatBalance.formatFixedNumber(data?.price || 0n) || 0
+  })
+
+  const {
+    write: writeApprove,
+    isLoading: isApproving,
+    isCheckingWallet,
+    isSuccess: isApproveSuccess
+  } = useApprove({
+    abi: DanceTokenABI,
+    allow: !isOwner,
+    args: [
+      RG02_NFT_MARKET_ADDRESS[bnbChain.id],
+      data?.price
+        ? formatBalance.formatFixedNumberToBigNumber(data.price).toString()
+        : 0n
+    ],
+    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
+    onSuccess: () => refetchAllowance()
+  })
+
+  // Purchase hook
+  const { purchase, purchasing } = usePurchaseMarket({
+    allow: (isApproveSuccess || isApproved) && !isOwner,
+    contractAddress: RG02_NFT_MARKET_ADDRESS[bnbChain.id],
+    orderId,
+    onSuccess: () => {
+      refetchAllowance()
+      enable()
+    }
+  })
 
   const getData = useCallback(async () => {
     try {
       const result = await marketplaceApi.getItemByOrderId(orderId)
       setData(result.data)
       setBreadcrumb(() => [
-        { name: 'Store', link: '/store' },
+        { name: 'Marketplace', link: '/marketplace' },
         { name: 'Item', link: pathname },
-        { name: result.data.name }
+        { name: result.data.nft.name }
       ])
     } catch (error) {
       console.error(error)
@@ -52,16 +104,6 @@ const MarketplaceItemPage = () => {
       }, 1000)
     }
   }, [orderId, pathname, toast])
-
-  const handlePurchase = useCallback(async () => {
-    setPurchasing(true)
-    try {
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setPurchasing(false)
-    }
-  }, [])
 
   useEffect(() => {
     getData()
@@ -128,37 +170,51 @@ const MarketplaceItemPage = () => {
               <div className='my-[10px] md:mb-[15px] md:mt-5'>
                 {data.amountInStock === 0 ? null : (
                   <div>
-                    {!address ? (
-                      <ConnectKitButton.Custom>
-                        {({ show, isConnecting }) => (
+                    <ConnectButtonPre>
+                      {isOwner ? (
+                        <>
                           <Button
-                            className='w-full text-white'
+                            className='w-full'
                             size='lg'
-                            disable={isConnecting}
-                            onClick={show}
+                            variant={'secondary'}
+                            disabled={isOwner}
                           >
-                            {isConnecting
-                              ? 'Submit on wallet'
-                              : 'Connect wallet to order'}
+                            Buy
                           </Button>
-                        )}
-                      </ConnectKitButton.Custom>
-                    ) : (
-                      <Button
-                        className='w-full'
-                        size='lg'
-                        variant={'secondary'}
-                        loading={purchasing}
-                        disable={loading || purchasing}
-                        onClick={() => handlePurchase()}
-                      >
-                        Buy
-                      </Button>
-                    )}
-
-                    <p className='mt-[7px] text-center font-bai-jamjuree text-sm text-[#ba92ba]'>
-                      We accept payments by crypto
-                    </p>
+                          <p className='mt-[7px] text-center font-bai-jamjuree text-sm text-[#ba92ba]'>
+                            You cannot buy your own item.
+                          </p>
+                        </>
+                      ) : isApproved ? (
+                        <Button
+                          className='w-full'
+                          size='lg'
+                          variant={'secondary'}
+                          loading={purchasing}
+                          disabled={!isApproved || isCheckingAllowance}
+                          onClick={purchase}
+                        >
+                          Buy
+                        </Button>
+                      ) : (
+                        <Button
+                          className='w-full'
+                          size='lg'
+                          variant={'secondary'}
+                          loading={
+                            isApproving ||
+                            isCheckingAllowance ||
+                            isCheckingWallet
+                          }
+                          disabled={!writeApprove}
+                          onClick={() => {
+                            writeApprove?.()
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      )}
+                    </ConnectButtonPre>
                   </div>
                 )}
               </div>
@@ -180,6 +236,28 @@ const MarketplaceItemPage = () => {
           </div>
         </div>
       </div>
+      <SuccessModal
+        open={visible}
+        exit={() => {
+          disable()
+          navigation('marketplace')
+        }}
+        title={'Buy Success'}
+        action={
+          <>
+            <Button
+              className=''
+              variant='outline'
+              onClick={() => navigation('/marketplace')}
+            >
+              Back to Marketplace
+            </Button>
+            <Button>Open My Inventory</Button>
+          </>
+        }
+      >
+        The item is already in your inventory
+      </SuccessModal>
     </motion.section>
   )
 }

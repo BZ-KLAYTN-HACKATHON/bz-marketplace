@@ -169,7 +169,7 @@ const StoreItemPage = () => {
                           size='lg'
                           variant={'secondary'}
                           loading={purchasing}
-                          disable={!isApproved || isCheckingAllowance}
+                          disabled={!isApproved || isCheckingAllowance}
                           onClick={purchase}
                         >
                           Purchase
