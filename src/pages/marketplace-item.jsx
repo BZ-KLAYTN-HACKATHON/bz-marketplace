@@ -17,6 +17,7 @@ import { Button } from 'components/ui/button'
 import { useToast } from 'components/ui/use-toast'
 import { Breadcrumb, LoadingScreen } from 'components/utils'
 import { bnbChain } from 'configs/customChains'
+import { useGlobalContext } from 'contexts/global'
 import { DanceTokenABI } from 'contract/abis'
 import { RG02_NFT_MARKET_ADDRESS, RG02_TOKEN_ADDRESS } from 'contract/addresses'
 import { useAllowance, useApprove, useToggle } from 'hooks'
@@ -33,6 +34,8 @@ const MarketplaceItemPage = () => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
   const [notfound, setNotfound] = useState(false)
+
+  const { inventory } = useGlobalContext()
 
   const { address } = useAccount()
   const { toast } = useToast()
@@ -252,7 +255,16 @@ const MarketplaceItemPage = () => {
             >
               Back to Marketplace
             </Button>
-            <Button>Open My Inventory</Button>
+            <Button
+              onClick={() => {
+                navigation('/marketplace')
+                setTimeout(() => {
+                  inventory.open()
+                }, 500)
+              }}
+            >
+              Open My Inventory
+            </Button>
           </>
         }
       >

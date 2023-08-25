@@ -5,17 +5,34 @@ import {
   ShoppingCartIcon
 } from '@heroicons/react/24/solid'
 import { ConnectKitButton } from 'connectkit'
+import { useCallback, useEffect, useMemo } from 'react'
 import { Link, matchPath, useLocation } from 'react-router-dom'
+import { useAccount, useNetwork } from 'wagmi'
 
 import { useGlobalContext } from 'contexts/global'
+import { DanceTokenABI } from 'contract/abis'
+import { RG02_TOKEN_ADDRESS } from 'contract/addresses'
+import { useTokenBalance } from 'hooks'
 import { cn } from 'lib/utils'
-import { useCallback, useMemo } from 'react'
-import { useAccount } from 'wagmi'
 import { Logo } from '.'
 
 export const Nav = () => {
   const { pathname } = useLocation()
   const { inventory } = useGlobalContext()
+
+  const { chain } = useNetwork()
+  const { balance, refetch } = useTokenBalance({
+    abi: DanceTokenABI,
+    token: RG02_TOKEN_ADDRESS[chain?.id]
+  })
+
+  useEffect(() => {
+    const sti = setInterval(() => {
+      refetch()
+    }, 15000)
+
+    return () => clearInterval(sti)
+  }, [refetch])
 
   const navList = useMemo(
     () => [
@@ -83,7 +100,7 @@ export const Nav = () => {
 
           <div className='block md:hidden'></div>
 
-          <div className='flex items-center gap-10'>
+          <div className='flex items-center gap-5'>
             <ul className='hidden items-center gap-10 md:flex'>
               {navList
                 .filter((item) => item?.right)
@@ -118,7 +135,12 @@ export const Nav = () => {
                   ) : null
                 )}
             </ul>
-            <ConnectKitButton showBalance={true} showAvatar={false} />
+            {address ? (
+              <div className='font-bai-jamjuree font-bold text-secondary'>
+                {balance} IDL
+              </div>
+            ) : null}
+            <ConnectKitButton showAvatar={false} />
           </div>
         </div>
       </nav>

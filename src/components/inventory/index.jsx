@@ -163,11 +163,11 @@ const Inventory = () => {
         </SheetHeader>
 
         <motion.div className='custom-scrollbar flex-[1_1_0%] overflow-auto'>
-          <ListItemInInventory loading={loading} getItems={() => {}}>
+          <ListItemInInventory lo ading={loading} getItems={() => {}}>
             {data.map((item, idx) => (
               <li
                 className='col-span-1 cursor-pointer'
-                key={idx}
+                key={item.id}
                 onClick={() => {
                   setNftDetailId(item?.id)
                   setNftCurrentIdx(idx)
