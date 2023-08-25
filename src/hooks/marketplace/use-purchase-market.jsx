@@ -6,36 +6,12 @@ import {
 } from 'wagmi'
 
 import { useToast } from 'components/ui/use-toast'
-import { bnbChain } from 'configs/customChains'
 import { MarketplaceNFTABI } from 'contract/abis'
-import { RG02_NFT_MARKET_ADDRESS } from 'contract/addresses'
 
-// {
-//   "internalType": "address",
-//   "name": "_nftAddress",
-//   "type": "address"
-// },
-// {
-//   "internalType": "uint256",
-//   "name": "_tokenId",
-//   "type": "uint256"
-// },
-// {
-//   "internalType": "address",
-//   "name": "_paymentToken",
-//   "type": "address"
-// },
-// {
-//   "internalType": "uint256",
-//   "name": "_price",
-//   "type": "uint256"
-// }
-
-const contractAddress = RG02_NFT_MARKET_ADDRESS[bnbChain.id]
-
-export const useSellPrepareInventory = ({
-  allow = true,
-  args = [], //[nftAddress, tokenId, paymentToken, price]
+export const usePurchaseMarket = ({
+  allow = false,
+  contractAddress = '',
+  orderId,
   onSuccess = () => {}
 }) => {
   const { toast } = useToast()
@@ -43,9 +19,9 @@ export const useSellPrepareInventory = ({
   const { config } = usePrepareContractWrite({
     abi: MarketplaceNFTABI,
     address: contractAddress,
-    args: [...args],
-    enabled: Boolean(contractAddress) && allow,
-    functionName: 'placeOrder'
+    args: [orderId],
+    enabled: Boolean(contractAddress) && allow && orderId,
+    functionName: 'fillOrder'
   })
 
   const { writeAsync, data, error, isLoading, isError, reset } =
@@ -62,13 +38,13 @@ export const useSellPrepareInventory = ({
     onSuccess: () => {
       onSuccess()
       toast({
-        title: 'Selled',
-        description: 'The item is already in the Marketplace'
+        title: 'Transaction Success',
+        description: 'The item is already in your inventory'
       })
     }
   })
 
-  const handleSell = useCallback(async () => {
+  const handleWriteContract = useCallback(async () => {
     try {
       await writeAsync?.()
     } catch (error) {
@@ -83,10 +59,10 @@ export const useSellPrepareInventory = ({
   return {
     data: receipt,
     error: error || errorWhenTransction,
-    selling: isPending || isLoading,
+    purchasing: isPending || isLoading,
     paid: isSuccess,
     isError: isError || isErrorWhenTransction,
-    sell: handleSell,
+    purchase: handleWriteContract,
     reset
   }
 }
