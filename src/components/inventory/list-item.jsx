@@ -14,9 +14,9 @@ export const ListItemInInventory = ({ children, loading }) => {
         {children}
       </ul>
 
-      <div className='opacity-1 mt-10 pb-5'>
+      <div className='opacity-1'>
         {loading ? (
-          <div className='flex w-full justify-center'>
+          <div className='flex w-full justify-center pt-5'>
             <div className='w-20'>
               <Loading />
             </div>

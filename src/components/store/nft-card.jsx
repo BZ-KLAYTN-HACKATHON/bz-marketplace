@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
+import { ArrowLongUpIcon } from '@heroicons/react/20/solid'
 import CoinIcon from 'assets/img/store/coin-icon.svg'
 import { cn } from 'lib/utils'
 import formatNumber from 'utils/formatNumber'
@@ -90,15 +91,19 @@ export const NftCardItem = ({
             <div className='hidden h-[23px] w-[23px]'>
               <img src={CoinIcon} alt='coin' className='h-full w-full' />
             </div>
-            <p
-              className={cn(
-                'font-primary text-sm font-bold text-[#F9CC29] md:text-base',
-                price ? '' : 'hidden'
-              )}
-            >
-              {price || 0} <span>{unit}</span>
-            </p>
-            {!price ? <p className='text-white/75'>Available</p> : null}
+
+            {!price ? (
+              <p className='text-sm text-white/75 md:text-base'>Available</p>
+            ) : (
+              <p
+                className={cn(
+                  'font-primary text-sm font-bold text-[#F9CC29] md:text-base',
+                  price ? '' : 'hidden'
+                )}
+              >
+                {price || 0} <span>{unit}</span>
+              </p>
+            )}
           </div>
           {amount ? (
             <p className='stock text-xs text-white/[46%]'>
@@ -106,7 +111,10 @@ export const NftCardItem = ({
             </p>
           ) : null}
           {onMarketplace ? (
-            <p className='stock text-xs text-white/[46%]'>on Marketplace</p>
+            <div className='flex items-center'>
+              <ArrowLongUpIcon className='h-4 text-white/[46%]' />
+              <p className='stock text-xs text-white/[46%]'>Selling</p>
+            </div>
           ) : null}
         </div>
       </div>
