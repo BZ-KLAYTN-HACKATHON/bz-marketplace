@@ -27,12 +27,6 @@ export const useCancelOrderInventory = ({
     functionName: 'cancelOrder'
   })
 
-  console.log(1, {
-    address: contractAddress,
-    args: [...args],
-    enabled: Boolean(contractAddress) && allow
-  })
-
   const { writeAsync, data, error, isLoading, isError, reset } =
     useContractWrite(config)
 

@@ -1,6 +1,5 @@
 import { getDefaultConfig } from 'connectkit'
 import { configureChains, createConfig } from 'wagmi'
-import { mainnet } from 'wagmi/chains'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
