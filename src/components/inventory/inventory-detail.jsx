@@ -378,10 +378,10 @@ export const InventoryDetail = ({
                     />
 
                     <DetailBaseStats
-                      dp={data?.detail?.dp || 0}
-                      mdp={data?.detail?.mdp || 0}
-                      earnPoint={data?.detail?.earnPoint || 0}
-                      rarity={data?.detail?.rarity}
+                      dp={data?.attributes?.dp || 0}
+                      mdp={data?.attributes?.mdp || 0}
+                      earnPoint={data?.attributes?.earnPoint || 0}
+                      rarity={data?.attributes?.rarity}
                     />
                   </div>
                 </div>
