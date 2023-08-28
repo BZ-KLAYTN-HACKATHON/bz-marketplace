@@ -130,7 +130,7 @@ export const DetailDescription = ({
         <p>{collectionDescription}</p>
         <p>{itemDescription}</p>
         <p>
-          Owners of this NFT have the opportunity to receive IDL tokens when
+          Owners of this NFT have the opportunity to receive IDWT tokens when
           participating in in-game matches.
         </p>
       </div>

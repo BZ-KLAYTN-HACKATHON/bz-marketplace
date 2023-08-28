@@ -75,7 +75,7 @@ export const ViewPoolBox = ({ data }) => {
       >
         <div className='relative z-10 flex h-full w-full items-center justify-between pl-[30px] pr-5 text-white'>
           <div className='flex items-center gap-[26px]'>
-            <img src={IDLCoinImage} alt='IDL Coin' className='w-[53px]' />
+            <img src={IDLCoinImage} alt='IDWT Coin' className='w-[53px]' />
             <p className='shadow-text-3 text-[22px] font-bold capitalize underline underline-offset-2'>
               View NFT Pool
             </p>

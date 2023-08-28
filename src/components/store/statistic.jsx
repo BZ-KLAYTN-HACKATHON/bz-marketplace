@@ -85,7 +85,7 @@ export const Statistic = ({ day: { one, seven, thirty }, showIn }) => {
             </div>
           </li>
           <li className='flex w-full items-center justify-center py-[31px] lg:w-1/3'>
-            <div className='flex w-1/3 justify-center lg:w-max'>
+            {/* <div className='flex w-1/3 justify-center lg:w-max'>
               <div className='w-[57px]'>
                 <img
                   src={TotalVolumeIcon}
@@ -93,15 +93,15 @@ export const Statistic = ({ day: { one, seven, thirty }, showIn }) => {
                   className='aspect-square w-full object-contain'
                 />
               </div>
-            </div>
+            </div> */}
             <div className='ml-10 flex w-2/3 flex-col lg:w-max'>
               <p className='text-sm uppercase text-white/[68%]'>Total volume</p>
               <p className='text-3xl font-medium'>
                 {showIn === 'store' ? (
-                  <>{tab.totalVolume} USD</>
+                  <>{tab.totalVolume} IDWT</>
                 ) : (
                   <>
-                    {formatBalance.formatFixedNumber(tab?.totalVolume || 0)} USD
+                    {formatBalance.formatFixedNumber(tab?.totalVolume || 0)} IDWT
                   </>
                 )}
               </p>

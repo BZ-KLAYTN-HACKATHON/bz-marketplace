@@ -290,7 +290,7 @@ export const InventoryDetail = ({
                         price={formatBalance.formatFixedNumber(
                           data?.price || 0n
                         )}
-                        unit='IDL'
+                        unit='IDWT'
                         onMarketplace={isSelling}
                         stock={data.amountInStock}
                       />

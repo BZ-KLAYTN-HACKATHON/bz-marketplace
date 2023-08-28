@@ -137,7 +137,7 @@ export const Nav = () => {
             </ul>
             {address ? (
               <div className='font-bai-jamjuree font-bold text-secondary'>
-                {balance} IDL
+                {balance} IDWT
               </div>
             ) : null}
             <ConnectKitButton showAvatar={false} />

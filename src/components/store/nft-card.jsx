@@ -15,7 +15,7 @@ export const NftCardItem = ({
   price,
   amount,
   nftId,
-  unit = 'IDL',
+  unit = 'IDWT',
   onMarketplace
 }) => {
   const itemRef = useRef(null)
