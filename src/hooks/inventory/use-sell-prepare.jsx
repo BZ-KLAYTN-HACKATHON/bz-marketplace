@@ -6,7 +6,7 @@ import {
 } from 'wagmi'
 
 import { useToast } from 'components/ui/use-toast'
-import { bnbChain } from 'configs/customChains'
+import { klaytnChain } from 'configs/customChains'
 import { MarketplaceNFTABI } from 'contract/abis'
 import { RG02_NFT_MARKET_ADDRESS } from 'contract/addresses'
 
@@ -31,7 +31,7 @@ import { RG02_NFT_MARKET_ADDRESS } from 'contract/addresses'
 //   "type": "uint256"
 // }
 
-const contractAddress = RG02_NFT_MARKET_ADDRESS[bnbChain.id]
+const contractAddress = RG02_NFT_MARKET_ADDRESS[klaytnChain.id]
 
 export const useSellPrepareInventory = ({
   allow = true,

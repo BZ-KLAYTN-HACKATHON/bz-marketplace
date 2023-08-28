@@ -55,7 +55,7 @@ export const DetailPreview = ({ imageUrl, videoUrl }) => {
         </div>
         <div className='col-span-1 gap-2'>
           <h4 className='text-xs font-medium text-violet-100'>Network</h4>
-          <p className='text-violet-250 text-[13px]'>{bnbChain.name}</p>
+          <p className='text-violet-250 text-[13px]'>{klaytnChain.name}</p>
         </div>
       </div> */}
     </div>

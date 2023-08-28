@@ -16,7 +16,7 @@ import {
 import { Button } from 'components/ui/button'
 import { useToast } from 'components/ui/use-toast'
 import { Breadcrumb, LoadingScreen } from 'components/utils'
-import { bnbChain } from 'configs/customChains'
+import { klaytnChain } from 'configs/customChains'
 import { useGlobalContext } from 'contexts/global'
 import { DanceTokenABI } from 'contract/abis'
 import { RG02_NFT_MARKET_ADDRESS, RG02_TOKEN_ADDRESS } from 'contract/addresses'
@@ -54,8 +54,8 @@ const MarketplaceItemPage = () => {
   } = useAllowance({
     abi: DanceTokenABI,
     allow: !isOwner,
-    args: [address, RG02_NFT_MARKET_ADDRESS[bnbChain.id]],
-    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
+    args: [address, RG02_NFT_MARKET_ADDRESS[klaytnChain.id]],
+    contractAddress: RG02_TOKEN_ADDRESS[klaytnChain.id],
     price: formatBalance.formatFixedNumber(data?.price || 0n) || 0
   })
 
@@ -68,19 +68,19 @@ const MarketplaceItemPage = () => {
     abi: DanceTokenABI,
     allow: !isOwner,
     args: [
-      RG02_NFT_MARKET_ADDRESS[bnbChain.id],
+      RG02_NFT_MARKET_ADDRESS[klaytnChain.id],
       data?.price
         ? formatBalance.formatFixedNumberToBigNumber(data.price).toString()
         : 0n
     ],
-    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
+    contractAddress: RG02_TOKEN_ADDRESS[klaytnChain.id],
     onSuccess: () => refetchAllowance()
   })
 
   // Purchase hook
   const { purchase, purchasing } = usePurchaseMarket({
     allow: (isApproveSuccess || isApproved) && !isOwner,
-    contractAddress: RG02_NFT_MARKET_ADDRESS[bnbChain.id],
+    contractAddress: RG02_NFT_MARKET_ADDRESS[klaytnChain.id],
     orderId,
     onSuccess: () => {
       refetchAllowance()

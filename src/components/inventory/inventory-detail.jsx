@@ -33,7 +33,7 @@ import {
 } from 'components/ui/sheet'
 import { useToast } from 'components/ui/use-toast'
 import { Breadcrumb, Loading, LoadingScreen } from 'components/utils'
-import { bnbChain } from 'configs/customChains'
+import { klaytnChain } from 'configs/customChains'
 import {
   RG02_NFT_ADDRESS,
   RG02_NFT_MARKET_ADDRESS,
@@ -87,9 +87,9 @@ export const InventoryDetail = ({
   // Init params of contracts
   const initSellParams = useMemo(
     () => [
-      RG02_NFT_ADDRESS[bnbChain.id],
+      RG02_NFT_ADDRESS[klaytnChain.id],
       data?.nftId,
-      RG02_TOKEN_ADDRESS[bnbChain.id]
+      RG02_TOKEN_ADDRESS[klaytnChain.id]
     ],
     [data?.nftId]
   )
@@ -107,10 +107,10 @@ export const InventoryDetail = ({
     abi: erc721ABI,
     allow: 'status' in data ? !isSelling : true,
     args: [data?.nftId],
-    contractAddress: RG02_NFT_ADDRESS[bnbChain.id],
+    contractAddress: RG02_NFT_ADDRESS[klaytnChain.id],
     functionName: 'getApproved',
     type: 'erc721',
-    spender: RG02_NFT_MARKET_ADDRESS[bnbChain.id]
+    spender: RG02_NFT_MARKET_ADDRESS[klaytnChain.id]
   })
   const {
     write: writeApprove,
@@ -119,8 +119,8 @@ export const InventoryDetail = ({
   } = useApprove({
     abi: erc721ABI,
     allow: !isApproved && ('status' in data ? !isSelling : true),
-    args: [RG02_NFT_MARKET_ADDRESS[bnbChain.id], data?.nftId],
-    contractAddress: RG02_NFT_ADDRESS[bnbChain.id],
+    args: [RG02_NFT_MARKET_ADDRESS[klaytnChain.id], data?.nftId],
+    contractAddress: RG02_NFT_ADDRESS[klaytnChain.id],
     onSuccess: () => refetchAllowance()
   })
 

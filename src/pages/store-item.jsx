@@ -15,7 +15,7 @@ import {
 import { Button } from 'components/ui/button'
 import { useToast } from 'components/ui/use-toast'
 import { Breadcrumb, LoadingScreen } from 'components/utils'
-import { bnbChain } from 'configs/customChains'
+import { klaytnChain } from 'configs/customChains'
 import { DanceTokenABI } from 'contract/abis'
 import { RG02_NFT_SHOP_ADDRESS, RG02_TOKEN_ADDRESS } from 'contract/addresses'
 import { useAllowance, useApprove } from 'hooks'
@@ -42,8 +42,8 @@ const StoreItemPage = () => {
     refetch: refetchAllowance
   } = useAllowance({
     abi: DanceTokenABI,
-    args: [address, RG02_NFT_SHOP_ADDRESS[bnbChain.id]],
-    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
+    args: [address, RG02_NFT_SHOP_ADDRESS[klaytnChain.id]],
+    contractAddress: RG02_TOKEN_ADDRESS[klaytnChain.id],
     price: data?.price || 0
   })
   const {
@@ -54,19 +54,19 @@ const StoreItemPage = () => {
   } = useApprove({
     abi: DanceTokenABI,
     args: [
-      RG02_NFT_SHOP_ADDRESS[bnbChain.id],
+      RG02_NFT_SHOP_ADDRESS[klaytnChain.id],
       data?.price
         ? formatBalance.formatFixedNumberToBigNumber(data.price).toString()
         : 0n
     ],
-    contractAddress: RG02_TOKEN_ADDRESS[bnbChain.id],
+    contractAddress: RG02_TOKEN_ADDRESS[klaytnChain.id],
     onSuccess: () => refetchAllowance()
   })
 
   // Purchase hook
   const { purchase, purchasing } = usePurchaseStore({
     allow: isApproveSuccess || isApproved,
-    contractAddress: RG02_NFT_SHOP_ADDRESS[bnbChain.id],
+    contractAddress: RG02_NFT_SHOP_ADDRESS[klaytnChain.id],
     packId,
     onSuccess: () => refetchAllowance()
   })

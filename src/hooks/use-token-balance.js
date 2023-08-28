@@ -1,6 +1,6 @@
 import { useAccount, useContractRead } from 'wagmi'
 
-import { bnbChain } from 'configs/customChains'
+import { klaytnChain } from 'configs/customChains'
 import formatBalance from 'utils/formatBalance'
 
 export const useTokenBalance = ({
@@ -17,7 +17,7 @@ export const useTokenBalance = ({
     address: token,
     enabled: Boolean(token) && Boolean(address) && allow,
     functionName,
-    chainId: bnbChain.id
+    chainId: klaytnChain.id
   })
 
   return {

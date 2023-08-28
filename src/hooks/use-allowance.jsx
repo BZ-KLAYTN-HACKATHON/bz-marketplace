@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useAccount, useContractRead } from 'wagmi'
 
-import { bnbChain } from 'configs/customChains'
+import { klaytnChain } from 'configs/customChains'
 import formatBalance from 'utils/formatBalance'
 
 export const useAllowance = ({
@@ -22,7 +22,7 @@ export const useAllowance = ({
     address: contractAddress,
     enabled: Boolean(contractAddress) && Boolean(address) && allow,
     functionName,
-    chainId: bnbChain.id
+    chainId: klaytnChain.id
   })
 
   const isApproved = useMemo(() => {

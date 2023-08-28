@@ -6,10 +6,10 @@ import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
-import { bnbChain, klaytnChain, klaytnTestnetChain } from './customChains'
+import { klaytnChain } from './customChains'
 
 const { publicClient, chains } = configureChains(
-  [bnbChain, mainnet, klaytnChain, klaytnTestnetChain],
+  [klaytnChain],
   [
     infuraProvider({
       apiKey: process.env.REACT_APP_INFURA_ID
